@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import data from "../Data";
 import { Link } from "react-router-dom";
 
 function ItemList({ submitProd, sendTheItems }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleBadgeClick = (category) => {
     setSelectedCategory(category);
@@ -63,19 +67,21 @@ function ItemList({ submitProd, sendTheItems }) {
 
       <div className="flex flex-wrap justify-center mb-20">
         {filteredItems.map((item) => (
-          <Link
-            onClick={() => sendTheItems(item)}
-            to="/item"
+          <div
             key={item.id}
             className="relative flex flex-col mx-4 my-6 w-96 rounded-xl bg-white bg-clip-border text-gray-700 shadow-md"
           >
-            <div className="relative h-96 overflow-hidden rounded-t-xl bg-white bg-clip-border">
+            <Link
+              onClick={() => sendTheItems(item)}
+              to="/item"
+              className="relative h-96 overflow-hidden rounded-t-xl bg-white bg-clip-border"
+            >
               <img
                 src={item.img}
                 className="h-full w-full object-cover"
                 alt={item.title}
               />
-            </div>
+            </Link>
             <div className="p-6">
               <div className="mb-2 flex items-center justify-between">
                 <p className="block font-sans text-base font-medium leading-relaxed text-blue-gray-900 antialiased">
@@ -98,7 +104,7 @@ function ItemList({ submitProd, sendTheItems }) {
                 Add to Cart
               </button>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </>

@@ -1,4 +1,10 @@
+import React, { useEffect } from "react";
+
 function Product({ showTheItems, submitProd }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   console.log("Received items in Product component:", showTheItems);
   return (
     <div className="max-w-md mx-auto bg-yellow-100 rounded-xl overflow-hidden shadow-xl mb-20 mt-20">

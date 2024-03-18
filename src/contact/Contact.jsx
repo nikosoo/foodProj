@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import contactImg from "../assets/images/worst-food-for-arteries-according-to-cardiologists.jpg";
 
 const Contact = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="font-[sans-serif] mb-10">
       <div className="bg-gradient-to-r from-blue-700 to-blue-300 w-full h-48">
