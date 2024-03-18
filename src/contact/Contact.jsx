@@ -2,6 +2,11 @@ import React, { useEffect } from "react";
 import contactImg from "../assets/images/worst-food-for-arteries-according-to-cardiologists.jpg";
 
 const Contact = () => {
+  const contactPlace = () => {
+    alert("Your form has been submitted");
+    window.location.reload();
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -52,6 +57,7 @@ const Contact = () => {
               ></textarea>
             </div>
             <button
+              onClick={contactPlace}
               type="button"
               className="text-white bg-red-500 hover:bg-red-600 font-semibold rounded-lg text-sm px-4 py-2 transition duration-300 ease-in-out transform hover:scale-105"
             >

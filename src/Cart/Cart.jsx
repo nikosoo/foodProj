@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
 function Cart({ showProducts, deleteItems }) {
+  const placeOrder = () => {
+    alert("Your order has been placed");
+    window.location.reload();
+  };
   const calculateTotalPrice = () => {
     let total = 0;
     for (let i = 0; i < showProducts.length; i++) {
@@ -74,7 +78,10 @@ function Cart({ showProducts, deleteItems }) {
               {calculateTotalPrice().toFixed(2)}$
             </span>
           </p>
-          <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+          <button
+            onClick={placeOrder}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+          >
             Place order
           </button>
         </div>
