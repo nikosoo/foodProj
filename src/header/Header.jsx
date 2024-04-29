@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/fast-food-pin-svgrepo-com.svg";
 
-function Header() {
+function Header({ userEmail, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -53,7 +53,7 @@ function Header() {
         <ul
           className={`${
             isOpen ? "block" : "hidden"
-          } md:flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-5`}
+          } md:flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-5`}
         >
           <li>
             <Link
@@ -99,11 +99,54 @@ function Header() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 014 0z"
                 />
               </svg>
             </Link>
           </li>
+        </ul>
+        <ul className="md:flex items-center space-x-5 md:space-x-8">
+          {userEmail && (
+            <>
+              <li className="hover:text-gray-200 text-white">
+                Logged in as: {userEmail}
+              </li>
+              <li>
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
+
+          {/* Separate ul for login and register */}
+          <ul className="md:flex items-center space-x-5 md:space-x-8">
+            {!userEmail && (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="hover:text-gray-200 text-white"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="hover:text-gray-200 text-white"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
         </ul>
       </nav>
     </div>
