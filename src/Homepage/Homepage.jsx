@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import fastFoodImage from "../assets/images/fast-food.jpg";
 import deliveryImage from "../assets/images/delivery.webp";
 import aboutus from "../assets/images/aboutus.jpg";
@@ -7,22 +7,42 @@ import pizza from "../assets/images/pizza1.svg";
 import chicken from "../assets/images/chicken1.svg";
 import "./Homepage.css";
 import { Link } from "react-router-dom";
-import data from "../Data";
+
 const HomePage = () => {
   const [menu1, setMenu1] = useState(true);
   const [menu2, setMenu2] = useState(false);
   const [menu3, setMenu3] = useState(false);
+  const [data, setData] = useState([]);
+
+  const fetchDataFromDatabase = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/collections");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataFromDatabase();
+  }, []);
 
   const onMenu1 = () => {
     setMenu1(true);
     setMenu2(false);
     setMenu3(false);
   };
+
   const onMenu2 = () => {
     setMenu1(false);
     setMenu2(true);
     setMenu3(false);
   };
+
   const onMenu3 = () => {
     setMenu1(false);
     setMenu2(false);

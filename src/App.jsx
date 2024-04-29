@@ -10,6 +10,7 @@ import Contact from "./contact/Contact";
 import Product from "./product/Product";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
+import Display from "./display/display";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -77,6 +78,7 @@ function App() {
             path="/login"
             element={<Login handleLoginSuccess={handleLoginSuccess} />}
           />
+          <Route path="/Display" element={<Display />} />
         </Routes>
         <Footer />
       </Router>

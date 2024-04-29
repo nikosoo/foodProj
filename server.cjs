@@ -1,4 +1,4 @@
-// server.js
+require("dotenv").config(); // Load environment variables from .env file
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -8,11 +8,11 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // Add this line to enable CORS for all routes
+app.use(cors());
 
-// Connect to MongoDB
+// Connect to MongoDB using environment variable
 mongoose
-  .connect("mongodb+srv://nikos000:skate395@nikos000.j6es7xy.mongodb.net/")
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
@@ -23,6 +23,26 @@ const UserSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", UserSchema);
+
+// Collection model
+const CollectionSchema = new mongoose.Schema({
+  id: Number,
+  title: String,
+  description: String,
+  price: Number,
+});
+
+const Collection = mongoose.model("Collection", CollectionSchema);
+
+app.get("/api/collections", async (req, res) => {
+  try {
+    const collections = await Collection.find({});
+    res.json(collections);
+  } catch (error) {
+    console.error("Error fetching data from MongoDB", error);
+    res.status(500).json({ error: "Failed to fetch data" });
+  }
+});
 
 // Register endpoint
 app.post("/api/register", async (req, res) => {
@@ -40,7 +60,7 @@ app.post("/api/login", async (req, res) => {
   if (!user) return res.status(400).send("Invalid email or password");
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password");
-  const token = jwt.sign({ _id: user._id }, "secret_key");
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
   res.header("auth-token", token).send(token);
 });
 

@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
-import data from "../Data";
 import { Link } from "react-router-dom";
 
 function ItemList({ submitProd, sendTheItems }) {
+  const [items, setItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const fetchData = async () => {
+      try {
+        // Fetch data from your database endpoint
+        const response = await fetch("http://localhost:5000/api/collections");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleBadgeClick = (category) => {
@@ -14,11 +28,12 @@ function ItemList({ submitProd, sendTheItems }) {
   };
 
   const filterItemsByCategory = (categoryId) => {
-    return data.filter((item) => {
+    return items.filter((item) => {
+      // Adjust filtering logic based on your database structure
       if (
-        (categoryId === "burgers" && item.id >= 1 && item.id <= 3) ||
-        (categoryId === "pizzas" && item.id >= 4 && item.id <= 7) ||
-        (categoryId === "fried chicken" && item.id >= 8 && item.id <= 11)
+        (categoryId === "burgers" && item.category === "burgers") ||
+        (categoryId === "pizzas" && item.category === "pizzas") ||
+        (categoryId === "fried chicken" && item.category === "fried chicken")
       ) {
         return true;
       }
@@ -28,7 +43,7 @@ function ItemList({ submitProd, sendTheItems }) {
 
   const filteredItems = selectedCategory
     ? filterItemsByCategory(selectedCategory)
-    : data;
+    : items;
 
   const allItems = () => {
     setSelectedCategory(null);
@@ -36,35 +51,37 @@ function ItemList({ submitProd, sendTheItems }) {
 
   return (
     <>
-      <div class="flex justify-center mt-12 mb-10">
-        <div class="flex space-x-2">
+      {/* Badge categories */}
+      <div className="flex justify-center mt-12 mb-10">
+        <div className="flex space-x-2">
           <span
             onClick={allItems}
-            class="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
           >
             All
           </span>
           <span
             onClick={() => handleBadgeClick("burgers")}
-            class="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
           >
             Burger
           </span>
           <span
             onClick={() => handleBadgeClick("pizzas")}
-            class="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
           >
             Pizza
           </span>
           <span
             onClick={() => handleBadgeClick("fried chicken")}
-            class="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
           >
             Fried Chicken
           </span>
         </div>
       </div>
 
+      {/* Render items */}
       <div className="flex flex-wrap justify-center mb-20">
         {filteredItems.map((item) => (
           <div
