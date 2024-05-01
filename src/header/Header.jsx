@@ -53,7 +53,7 @@ function Header({ userEmail, handleLogout }) {
         <ul
           className={`${
             isOpen ? "block" : "hidden"
-          } md:flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-5`}
+          } md:flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-5 w-full`}
         >
           <li>
             <Link
@@ -82,15 +82,30 @@ function Header({ userEmail, handleLogout }) {
               Contact Us
             </Link>
           </li>
-          <li>
+          <li className="flex justify-center md:justify-end">
             <Link
               to="/cart"
               className="hover:text-gray-200 text-white"
               onClick={() => setIsOpen(false)}
+              style={{ width: "fit-content", margin: "auto" }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-6 w-6 md:hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 014 0z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="hidden h-6 w-6 md:flex"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -123,30 +138,24 @@ function Header({ userEmail, handleLogout }) {
           )}
 
           {/* Separate ul for login and register */}
-          <ul className="md:flex items-center space-x-5 md:space-x-8">
-            {!userEmail && (
-              <>
-                <li>
-                  <Link
-                    to="/login"
-                    className="hover:text-gray-200 text-white"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/register"
-                    className="hover:text-gray-200 text-white"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Register
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
+          {!userEmail && (
+            <li className="md:flex items-center space-x-5 md:space-x-8">
+              <Link
+                to="/login"
+                className="hover:text-gray-200 text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="hover:text-gray-200 text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                Register
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>
