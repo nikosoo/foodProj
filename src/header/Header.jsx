@@ -10,19 +10,17 @@ function Header({ userEmail, handleLogout }) {
   };
 
   return (
-    <div className="flex justify-center bg-gradient-to-r from-gray-800 to-gray-600">
-      <nav className="w-full max-w-screen-lg flex flex-col items-center justify-between px-5 xl:px-12 py-6 md:flex-row">
-        <Link
-          to="/"
-          className="text-3xl font-bold font-heading mb-4 md:mb-0 text-white"
-        >
-          <img src={logo} width="60px" alt="logo" />
-        </Link>
+    <div className="bg-gradient-to-r from-gray-800 to-gray-600">
+      <nav className="container mx-auto py-6 px-4 md:px-8">
+        <div className="flex items-center justify-between ">
+          <Link to="/" className="flex items-center text-white">
+            <img src={logo} width="60px" alt="logo" className="mr-2" />
+            <span className="text-3xl font-bold font-heading">Taste Haven</span>
+          </Link>
 
-        <div className="flex items-center space-x-5 md:hidden">
           <button
             onClick={toggleDropdown}
-            className="text-white focus:outline-none"
+            className="md:hidden text-white focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -48,17 +46,76 @@ function Header({ userEmail, handleLogout }) {
               )}
             </svg>
           </button>
+
+          <ul className="hidden md:flex items-center space-x-8 flex-grow justify-center">
+            <li>
+              <Link to="/" className="text-white hover:text-gray-200">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/products" className="text-white hover:text-gray-200">
+                Menu
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-white hover:text-gray-200">
+                Contact Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/cart" className="text-white hover:text-gray-200">
+                Cart
+              </Link>
+            </li>
+          </ul>
+
+          <ul className="hidden md:flex items-center space-x-8">
+            {userEmail ? (
+              <>
+                <li className="text-white">Logged in as: {userEmail}</li>
+                <li>
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="border-yellow-500 border hover:border-yellow-600 text-yellow-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
 
+        {/* Mobile Dropdown */}
         <ul
           className={`${
             isOpen ? "block" : "hidden"
-          } md:flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-5 w-full`}
+          } md:hidden mt-4 flex flex-col items-center space-y-4`}
         >
           <li>
             <Link
               to="/"
-              className="hover:text-gray-200 text-white"
+              className="text-white hover:text-gray-200"
               onClick={() => setIsOpen(false)}
             >
               Home
@@ -67,7 +124,7 @@ function Header({ userEmail, handleLogout }) {
           <li>
             <Link
               to="/products"
-              className="hover:text-gray-200 text-white"
+              className="text-white hover:text-gray-200"
               onClick={() => setIsOpen(false)}
             >
               Menu
@@ -76,85 +133,55 @@ function Header({ userEmail, handleLogout }) {
           <li>
             <Link
               to="/contact"
-              className="hover:text-gray-200 text-white"
+              className="text-white hover:text-gray-200"
               onClick={() => setIsOpen(false)}
             >
               Contact Us
             </Link>
           </li>
-          <li className="flex justify-center md:justify-end">
+          <li>
             <Link
               to="/cart"
-              className="hover:text-gray-200 text-white"
+              className="text-white hover:text-gray-200"
               onClick={() => setIsOpen(false)}
-              style={{ width: "fit-content", margin: "auto" }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 md:hidden"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 014 0z"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="hidden h-6 w-6 md:flex"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 014 0z"
-                />
-              </svg>
+              Cart
             </Link>
           </li>
-        </ul>
-        <ul className="md:flex items-center space-x-5 md:space-x-8">
           {userEmail && (
+            <li className="text-white">Logged in as: {userEmail}</li>
+          )}
+          {userEmail && (
+            <li>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </li>
+          )}
+          {!userEmail && (
             <>
-              <li className="hover:text-gray-200 text-white">
-                Logged in as: {userEmail}
+              <li>
+                <Link
+                  to="/login"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
               </li>
               <li>
-                <button
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  onClick={handleLogout}
+                <Link
+                  to="/register"
+                  className="border-yellow-500 border hover:border-yellow-600 text-yellow-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => setIsOpen(false)}
                 >
-                  Logout
-                </button>
+                  Register
+                </Link>
               </li>
             </>
-          )}
-
-          {/* Separate ul for login and register */}
-          {!userEmail && (
-            <li className="md:flex items-center space-x-5 md:space-x-8">
-              <Link
-                to="/login"
-                className="hover:text-gray-200 text-white"
-                onClick={() => setIsOpen(false)}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="hover:text-gray-200 text-white"
-                onClick={() => setIsOpen(false)}
-              >
-                Register
-              </Link>
-            </li>
           )}
         </ul>
       </nav>
