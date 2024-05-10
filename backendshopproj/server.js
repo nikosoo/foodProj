@@ -1,20 +1,20 @@
-require("dotenv").config(); // Load environment variables from .env file
+// Load environment variables from .env file
+import dotenv from "dotenv";
+dotenv.config();
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
+import express from "express";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB using environment variable
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Failed to connect to MongoDB", err));
+await mongoose.connect(process.env.MONGODB_URI);
+console.log("Connected to MongoDB");
 
 // User model
 const UserSchema = new mongoose.Schema({
