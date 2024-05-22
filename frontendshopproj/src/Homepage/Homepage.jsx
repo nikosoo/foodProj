@@ -221,7 +221,7 @@ const HomePage = () => {
           </p>
         </div>
         <img
-          className="mt-8 md:mt-0 max-w-md mx-auto md:ml-4 border-2 border-red-500 rounded-full"
+          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto border-2 border-red-500 rounded-full"
           alt="about-us"
           src={aboutus}
         />
