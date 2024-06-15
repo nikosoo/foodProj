@@ -14,16 +14,40 @@ import "./App.css";
 function App() {
   const [products, setProducts] = useState([]);
   const [showItem, setShowItems] = useState([]);
-  const [userEmail, setUserEmail] = useState(""); // State to store user's email
+  const [userEmail, setUserEmail] = useState("");
 
-  const submitProduct = (selectedItem) => {
-    setProducts([...products, selectedItem]);
+  const addToCart = (selectedItem) => {
+    const existingProduct = products.find(
+      (product) => product.id === selectedItem.id
+    );
+    if (existingProduct) {
+      setProducts(
+        products.map((product) =>
+          product.id === selectedItem.id
+            ? { ...product, quantity: product.quantity + 1 }
+            : product
+        )
+      );
+    } else {
+      setProducts([...products, { ...selectedItem, quantity: 1 }]);
+    }
   };
 
-  const handleDelete = (index) => {
-    const updatedCart = [...products];
-    updatedCart.splice(index, 1);
-    setProducts(updatedCart);
+  const removeFromCart = (selectedItem) => {
+    const existingProduct = products.find(
+      (product) => product.id === selectedItem.id
+    );
+    if (existingProduct.quantity > 1) {
+      setProducts(
+        products.map((product) =>
+          product.id === selectedItem.id
+            ? { ...product, quantity: product.quantity - 1 }
+            : product
+        )
+      );
+    } else {
+      setProducts(products.filter((product) => product.id !== selectedItem.id));
+    }
   };
 
   const sendItems = (item) => {
@@ -31,44 +55,50 @@ function App() {
     console.log(item);
   };
 
-  // Function to update user's email upon successful login
   const handleLoginSuccess = (email) => {
     setUserEmail(email);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
-    setUserEmail(""); // Clear user email
-    // Add additional logout actions here if needed
+    setUserEmail("");
   };
 
   return (
     <>
       <Router>
-        {/* Pass userEmail and handleLogout as props to Header */}
         <Header userEmail={userEmail} handleLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Homepage addToCart={submitProduct} />} />
+          <Route
+            path="/"
+            element={
+              <Homepage
+                products={products}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+              />
+            }
+          />
           <Route
             path="/cart"
             element={
-              <Cart deleteItems={handleDelete} showProducts={products} />
+              <Cart
+                showProducts={products}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+              />
             }
           />
           <Route
             path="/products"
             element={
-              <ItemList sendTheItems={sendItems} submitProd={submitProduct} />
+              <ItemList sendTheItems={sendItems} submitProd={addToCart} />
             }
           />
           <Route path="/contact" element={<Contact />} />
           <Route
             path="/item"
-            element={
-              <Product submitProd={submitProduct} showTheItems={showItem} />
-            }
+            element={<Product submitProd={addToCart} showTheItems={showItem} />}
           />
-          {/* Pass handleLoginSuccess function to Login */}
           <Route
             path="/register"
             element={<Register handleLoginSuccess={handleLoginSuccess} />}

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import fastFoodImage from "../../assets/images/fast-food.jpg";
 import deliveryImage from "../../assets/images/delivery.webp";
 import aboutus from "../../assets/images/aboutus.jpg";
-import burger from "../../assets/images/burger1.svg";
-import pizza from "../../assets/images/pizza1.svg";
-import chicken from "../../assets/images/chicken1.svg";
-import "./Homepage.css";
-import { Link } from "react-router-dom";
 import bgImage from "../../assets/images/fastfood.jpg";
+import "./Homepage.css";
 
-const HomePage = () => {
+const HomePage = ({ products, addToCart, removeFromCart }) => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -33,7 +30,6 @@ const HomePage = () => {
 
   const handleImageClick = (category) => {
     if (selectedCategory === category) {
-      // If clicked category is already selected, toggle off (show all)
       setSelectedCategory(null);
       setActiveCategory(null);
     } else {
@@ -41,6 +37,7 @@ const HomePage = () => {
       setActiveCategory(category);
     }
   };
+
   return (
     <>
       <div
@@ -103,7 +100,6 @@ const HomePage = () => {
         <hr className="border-t-2 border-gray-300 mt-8 mx-auto w-full" />
       </div>
 
-      {/* Render items based on selectedCategory */}
       <div className="max-w-7xl mx-auto px-4 py-8 font-poppins">
         <h3 className="text-3xl font-semibold text-dark text-center mb-4">
           {selectedCategory
@@ -128,12 +124,29 @@ const HomePage = () => {
                 <h4 className="text-lg font-semibold">{item.title}</h4>
                 <p className="text-gray-600">{item.description}</p>
                 <p className="mt-2 text-gray-900 font-bold">${item.price}</p>
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={() => removeFromCart(item)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded"
+                  >
+                    -
+                  </button>
+                  <span className="mx-2">
+                    {products.find((prod) => prod.id === item.id)?.quantity ||
+                      0}
+                  </span>
+                  <button
+                    onClick={() => addToCart(item)}
+                    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             ))}
         </div>
       </div>
 
-      {/* About us section code */}
       <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-60">
         <div className="max-w-md mx-auto md:mr-4">
           <h3 className="text-xl font-semibold mb-4">About us</h3>
@@ -161,4 +174,5 @@ const HomePage = () => {
     </>
   );
 };
+
 export default HomePage;

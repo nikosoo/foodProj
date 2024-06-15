@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 
-function Cart({ showProducts, deleteItems }) {
+function Cart({ showProducts, addToCart, removeFromCart }) {
   const placeOrder = () => {
     alert("Your order has been placed");
     window.location.reload();
   };
+
   const calculateTotalPrice = () => {
     let total = 0;
     for (let i = 0; i < showProducts.length; i++) {
-      total += showProducts[i].price;
+      total += showProducts[i].price * showProducts[i].quantity;
     }
     return total;
   };
+
   return (
     <div
       className={`container mx-auto max-w-4xl mt-8 px-4 ${
@@ -32,12 +34,18 @@ function Cart({ showProducts, deleteItems }) {
                 Price
               </th>
               <th scope="col" className="px-6 py-3">
+                Quantity
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Total
+              </th>
+              <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Edit</span>
               </th>
             </tr>
           </thead>
           <tbody>
-            {showProducts.map((item1, index) => (
+            {showProducts.map((item, index) => (
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -46,22 +54,36 @@ function Cart({ showProducts, deleteItems }) {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {item1.title}
+                  {item.title}
                 </th>
                 <td className="px-6 py-4">
-                  <img
-                    src={item1.img}
-                    alt={item1.title}
-                    className="h-10 w-10"
-                  />
+                  <img src={item.img} alt={item.title} className="h-10 w-10" />
                 </td>
-                <td className="px-6 py-4">{item1.price}$</td>
+                <td className="px-6 py-4">{item.price}$</td>
+                <td className="px-6 py-4 flex items-center">
+                  <button
+                    onClick={() => removeFromCart(item)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded"
+                  >
+                    -
+                  </button>
+                  <span className="mx-2">{item.quantity}</span>
+                  <button
+                    onClick={() => addToCart(item)}
+                    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-2 rounded"
+                  >
+                    +
+                  </button>
+                </td>
+                <td className="px-6 py-4">
+                  {(item.price * item.quantity).toFixed(2)}$
+                </td>
                 <td className="px-6 py-4 text-right">
                   <button
                     className="font-medium text-red-600 hover:text-red-700 dark:text-blue-500 dark:hover:text-blue-600"
-                    onClick={() => deleteItems(index)}
+                    onClick={() => removeFromCart(item)}
                   >
-                    Delete
+                    Remove
                   </button>
                 </td>
               </tr>
