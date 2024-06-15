@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Cart({ showProducts, addToCart, removeFromCart }) {
   const calculateTotalPrice = () => {
@@ -76,9 +77,12 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
               {calculateTotalPrice().toFixed(2)}$
             </span>
           </p>
-          <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+          <Link
+            to="/checkout"
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+          >
             Proceed to checkout
-          </button>
+          </Link>
         </div>
       )}
     </div>
