@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import logo from "../../assets/images/fast-food-pin-svgrepo-com.svg";
+import "./Footer.css";
 
 function Footer() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -48,6 +49,12 @@ function Footer() {
               >
                 Contact Us
               </Link>
+              <button
+                onClick={openModal}
+                className="text-white hover:text-gray-900 block text-base leading-6"
+              >
+                Terms and Conditions
+              </button>
             </nav>
           </div>
 
@@ -104,6 +111,44 @@ function Footer() {
         <p className="mt-8 text-base leading-6 text-center text-gray-400">
           © 2024 TasteHaven, Inc. All rights reserved.
         </p>
+        {/* Modal */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Terms and Conditions"
+          className="modal"
+          overlayClassName="overlay"
+        >
+          <div className="modal-content">
+            <h2 className="text-2xl mb-4">Terms and Conditions</h2>
+            <p className="text-sm text-gray-800">
+              {/* Add your terms and conditions text here */}
+              Welcome to Taste Haven! By accessing this website, we assume you
+              agree to these terms and conditions. Please do not continue to use
+              Taste Haven if you do not accept all of the terms and conditions
+              stated on this page. Use of Cookies We use cookies on this
+              website. By using Taste Haven, you consent to the use of cookies
+              in accordance with our privacy policy. Intellectual Property All
+              content on Taste Haven is owned by us or our licensors and is
+              protected by intellectual property laws. You may view and print
+              pages for personal use only. You must not reproduce, duplicate, or
+              distribute any content without permission. Links to Other Websites
+              Our website may contain links to third-party websites. These links
+              are provided for your convenience. We do not endorse the content
+              of linked websites and are not responsible for their content or
+              privacy practices. Changes to Terms We may update these terms and
+              conditions from time to time. Please check this page regularly for
+              updates. Continued use of the website after changes constitutes
+              your acceptance of the revised terms.
+            </p>
+            <button
+              onClick={closeModal}
+              className="bg-gray-800 text-white px-4 py-2 mt-4 hover:bg-gray-700"
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
       </div>
     </section>
   );
