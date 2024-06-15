@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import contactImg from "../assets/images/worst-food-for-arteries-according-to-cardiologists.jpg";
+import contactImg from "../../assets/images/worst-food-for-arteries-according-to-cardiologists.jpg";
 
 const Contact = () => {
   const contactPlace = () => {

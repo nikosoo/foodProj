@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import "./App.css";
-import Header from "./header/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ItemList from "./ItemList/ItemList";
-import Cart from "./Cart/Cart";
-import Homepage from "./Homepage/Homepage";
-import Footer from "./footer/Footer";
-import Contact from "./contact/Contact";
-import Product from "./product/Product";
-import Register from "./Register/Register";
-import Login from "./Login/Login";
+import Header from "./components/header/Header";
+import ItemList from "./pages/ItemList/ItemList";
+import Cart from "./pages/Cart/Cart";
+import Homepage from "./pages/Homepage/Homepage";
+import Footer from "./components/footer/Footer";
+import Contact from "./pages/contact/Contact";
+import Product from "./pages/product/Product";
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import "./App.css";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,7 @@ function App() {
         {/* Pass userEmail and handleLogout as props to Header */}
         <Header userEmail={userEmail} handleLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<Homepage addToCart={submitProduct} />} />
           <Route
             path="/cart"
             element={

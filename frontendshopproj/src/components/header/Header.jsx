@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/fast-food-pin-svgrepo-com.svg";
+import logo from "../../assets/images/fast-food-pin-svgrepo-com.svg";
+import basket from "../../assets/images/basket.svg";
 
 function Header({ userEmail, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,17 +11,17 @@ function Header({ userEmail, handleLogout }) {
   };
 
   return (
-    <div className="bg-gradient-to-r from-gray-800 to-gray-600">
+    <div className="bg-white font-poppins">
       <nav className="container mx-auto py-6 px-4 md:px-8">
-        <div className="flex items-center justify-between ">
-          <Link to="/" className="flex items-center text-white">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center text-gray-800">
             <img src={logo} width="60px" alt="logo" className="mr-2" />
             <span className="text-3xl font-bold font-heading">Taste Haven</span>
           </Link>
 
           <button
             onClick={toggleDropdown}
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-gray-800 focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,23 +50,27 @@ function Header({ userEmail, handleLogout }) {
 
           <ul className="hidden md:flex items-center space-x-8 flex-grow justify-center">
             <li>
-              <Link to="/" className="text-white hover:text-gray-200">
+              <Link
+                to="/"
+                className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/products" className="text-white hover:text-gray-200">
+              <Link
+                to="/products"
+                className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+              >
                 Menu
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="text-white hover:text-gray-200">
+              <Link
+                to="/contact"
+                className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+              >
                 Contact Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/cart" className="text-white hover:text-gray-200">
-                Cart
               </Link>
             </li>
           </ul>
@@ -73,7 +78,7 @@ function Header({ userEmail, handleLogout }) {
           <ul className="hidden md:flex items-center space-x-8">
             {userEmail ? (
               <>
-                <li className="text-white">Logged in as: {userEmail}</li>
+                <li className="text-gray-800">Logged in as: {userEmail}</li>
                 <li>
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -87,8 +92,16 @@ function Header({ userEmail, handleLogout }) {
               <>
                 <li>
                   <Link
+                    to="/cart"
+                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+                  >
+                    <img src={basket} width="30px" alt="basket" />
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/login"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
                     Login
                   </Link>
@@ -96,7 +109,7 @@ function Header({ userEmail, handleLogout }) {
                 <li>
                   <Link
                     to="/register"
-                    className="border-yellow-500 border hover:border-yellow-600 text-yellow-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="border border-orange-500 hover:bg-orange-500 hover:text-white text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
                     Register
                   </Link>
@@ -115,7 +128,7 @@ function Header({ userEmail, handleLogout }) {
           <li>
             <Link
               to="/"
-              className="text-white hover:text-gray-200"
+              className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
               onClick={() => setIsOpen(false)}
             >
               Home
@@ -124,7 +137,7 @@ function Header({ userEmail, handleLogout }) {
           <li>
             <Link
               to="/products"
-              className="text-white hover:text-gray-200"
+              className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
               onClick={() => setIsOpen(false)}
             >
               Menu
@@ -133,23 +146,15 @@ function Header({ userEmail, handleLogout }) {
           <li>
             <Link
               to="/contact"
-              className="text-white hover:text-gray-200"
+              className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
               onClick={() => setIsOpen(false)}
             >
               Contact Us
             </Link>
           </li>
-          <li>
-            <Link
-              to="/cart"
-              className="text-white hover:text-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              Cart
-            </Link>
-          </li>
+
           {userEmail && (
-            <li className="text-white">Logged in as: {userEmail}</li>
+            <li className="text-gray-800">Logged in as: {userEmail}</li>
           )}
           {userEmail && (
             <li>
@@ -165,8 +170,17 @@ function Header({ userEmail, handleLogout }) {
             <>
               <li>
                 <Link
+                  to="/cart"
+                  className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <img src={basket} width="30px" alt="basket" />
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/login"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   onClick={() => setIsOpen(false)}
                 >
                   Login
@@ -175,7 +189,7 @@ function Header({ userEmail, handleLogout }) {
               <li>
                 <Link
                   to="/register"
-                  className="border-yellow-500 border hover:border-yellow-600 text-yellow-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="border-orange-500 border hover:border-orange-600 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   onClick={() => setIsOpen(false)}
                 >
                   Register
