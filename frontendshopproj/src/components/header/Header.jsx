@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/images/fast-food-pin-svgrepo-com.svg";
 import basket from "../../assets/images/basket.svg";
 
-function Header({ userEmail, handleLogout }) {
+function Header({ userEmail, handleLogout, cartItemsCount }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -75,13 +75,13 @@ function Header({ userEmail, handleLogout }) {
             </li>
           </ul>
 
-          <ul className="hidden md:flex items-center space-x-8">
+          <ul className="hidden md:flex items-center space-x-8 relative">
             {userEmail ? (
               <>
                 <li className="text-gray-800">Logged in as: {userEmail}</li>
                 <li>
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline relative"
                     onClick={handleLogout}
                   >
                     Logout
@@ -93,9 +93,14 @@ function Header({ userEmail, handleLogout }) {
                 <li>
                   <Link
                     to="/cart"
-                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
+                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
                   >
                     <img src={basket} width="30px" alt="basket" />
+                    {cartItemsCount > 0 && (
+                      <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                        {cartItemsCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
                 <li>

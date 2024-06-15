@@ -10,11 +10,13 @@ import Product from "./pages/product/Product";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import "./App.css";
+import CheckoutPage from "./pages/Checkout/Checkout";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [showItem, setShowItems] = useState([]);
   const [userEmail, setUserEmail] = useState("");
+  const [cartItemsCount, setCartItemsCount] = useState(0); // State to track cart items count
 
   const addToCart = (selectedItem) => {
     const existingProduct = products.find(
@@ -31,6 +33,7 @@ function App() {
     } else {
       setProducts([...products, { ...selectedItem, quantity: 1 }]);
     }
+    setCartItemsCount(cartItemsCount + 1); // Increment cart items count
   };
 
   const removeFromCart = (selectedItem) => {
@@ -48,6 +51,7 @@ function App() {
     } else {
       setProducts(products.filter((product) => product.id !== selectedItem.id));
     }
+    setCartItemsCount(cartItemsCount - 1); // Decrement cart items count
   };
 
   const sendItems = (item) => {
@@ -66,7 +70,11 @@ function App() {
   return (
     <>
       <Router>
-        <Header userEmail={userEmail} handleLogout={handleLogout} />
+        <Header
+          userEmail={userEmail}
+          handleLogout={handleLogout}
+          cartItemsCount={cartItemsCount} // Pass cartItemsCount to Header
+        />
         <Routes>
           <Route
             path="/"
@@ -107,6 +115,7 @@ function App() {
             path="/login"
             element={<Login handleLoginSuccess={handleLoginSuccess} />}
           />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
         <Footer />
       </Router>
