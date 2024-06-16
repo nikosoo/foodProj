@@ -16,13 +16,13 @@ function Footer() {
   };
 
   return (
-    <section className="bg-gradient-to-r from-gray-800 to-gray-600">
+    <section className="bg-gradient-to-r from-gray-800 to-gray-600 font-poppins">
       <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Column 1: Logo with Description */}
           <div className="md:text-left">
             <img src={logo} alt="Logo" className="w-20 h-20 mb-4" />
-            <p className="text-white  text-sm">
+            <p className="text-white text-sm">
               Delicious food, delivered fast!
             </p>
           </div>
@@ -30,31 +30,31 @@ function Footer() {
           {/* Column 2: Pages Navigation */}
           <div className="text-center md:text-left">
             <nav className="space-y-4">
-              <h2 className="text-3xl text-white">PAGES</h2>
+              <h2 className="text-3xl text-white">Pages</h2>
               <Link
                 to="/"
-                className="text-white hover:text-gray-900 block text-base leading-6"
+                className="text-white block text-base leading-6 hover:underline"
               >
                 Home
               </Link>
               <Link
                 to="/products"
-                className="text-white hover:text-gray-900 block text-base leading-6"
+                className="text-white block text-base leading-6 hover:underline"
               >
                 Menu
               </Link>
               <Link
                 to="/contact"
-                className="text-white hover:text-gray-900 block text-base leading-6"
+                className="text-white block text-base leading-6 hover:underline"
               >
                 Contact Us
               </Link>
-              <button
+              <Link
                 onClick={openModal}
-                className="text-white hover:text-gray-900 block text-base leading-6"
+                className="text-white block text-base leading-6 hover:underline"
               >
                 Terms and Conditions
-              </button>
+              </Link>
             </nav>
           </div>
 
@@ -62,8 +62,24 @@ function Footer() {
           <div className="text-center md:text-left">
             <div className="space-y-4">
               <h2 className="text-3xl text-white">Get in Touch</h2>
-              <p className="text-white">Email: info@tastehaven.com</p>
-              <p className="text-white">Phone: +1-123-456-7890</p>
+              <p className="text-white">
+                Email:{" "}
+                <a
+                  href="mailto:info@tastehaven.com"
+                  className="text-white hover:underline"
+                >
+                  info@tastehaven.com
+                </a>
+              </p>
+              <p className="text-white">
+                Phone:{" "}
+                <a
+                  href="tel:+11234567890"
+                  className="text-white hover:underline"
+                >
+                  +1-123-456-7890
+                </a>
+              </p>
               <div className="flex justify-center md:justify-start space-x-6 mt-4">
                 <a
                   href="https://twitter.com/bos_nikos"
@@ -141,6 +157,7 @@ function Footer() {
               updates. Continued use of the website after changes constitutes
               your acceptance of the revised terms.
             </p>
+
             <button
               onClick={closeModal}
               className="bg-gray-800 text-white px-4 py-2 mt-4 hover:bg-gray-700"
