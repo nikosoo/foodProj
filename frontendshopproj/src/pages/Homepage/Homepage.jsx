@@ -73,7 +73,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
           juicy burgers, and crispy fried chicken. Enjoy every bite!
         </p>
 
-        <div className="mt-10 flex flex-col md:flex-row justify-center items-center mb-8 gap-8">
+        <div className="mt-10 flex flex-col md:flex-row justify-center items-center mb-8 gap-8 font-poppins">
           {["burgers", "pizzas", "fried chicken"].map((category, index) => (
             <div className="text-center" key={index}>
               {data
@@ -146,7 +146,6 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
             ))}
         </div>
       </div>
-
       <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-60">
         <div className="max-w-md mx-auto md:mr-4">
           <h3 className="text-xl font-semibold mb-4">About us</h3>
@@ -166,7 +165,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
           </p>
         </div>
         <img
-          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto border-2 border-red-500 rounded-full"
+          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto border-2 border-red-500 rounded-full transition-transform duration-500 transform hover:scale-110"
           alt="about-us"
           src={aboutus}
         />

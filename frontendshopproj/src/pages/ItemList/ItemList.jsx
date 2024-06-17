@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./ItemList.css"; // Assuming you have a styles.css file for animations
 
 function ItemList({ submitProd, sendTheItems }) {
   const [items, setItems] = useState([]);
@@ -30,20 +31,19 @@ function ItemList({ submitProd, sendTheItems }) {
   const filterItemsByCategory = (categoryId) => {
     return items.filter((item) => {
       // Adjust filtering logic based on your database structure
-      if (
-        (categoryId === "burgers" && item.category === "burgers") ||
-        (categoryId === "pizzas" && item.category === "pizzas") ||
-        (categoryId === "fried chicken" && item.category === "fried chicken")
-      ) {
-        return true;
-      }
-      return false;
+      return item.category === categoryId;
     });
   };
 
+  const categoryOrder = ["burgers", "pizzas", "fried chicken"];
+
+  const sortedItems = categoryOrder.flatMap((category) =>
+    filterItemsByCategory(category)
+  );
+
   const filteredItems = selectedCategory
     ? filterItemsByCategory(selectedCategory)
-    : items;
+    : sortedItems;
 
   const allItems = () => {
     setSelectedCategory(null);
@@ -52,29 +52,45 @@ function ItemList({ submitProd, sendTheItems }) {
   return (
     <>
       {/* Badge categories */}
-      <div className="flex justify-center mt-12 mb-10">
+      <div className="flex justify-center mt-12 mb-10 font-poppins">
         <div className="flex space-x-2">
           <span
             onClick={allItems}
-            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className={`inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium ${
+              selectedCategory === null
+                ? "bg-yellow-700 text-white hover:bg-yellow-800"
+                : "bg-yellow-500 text-gray-800 cursor-pointer hover:bg-yellow-600"
+            }`}
           >
             All
           </span>
           <span
             onClick={() => handleBadgeClick("burgers")}
-            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className={`inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium ${
+              selectedCategory === "burgers"
+                ? "bg-yellow-700 text-white hover:bg-yellow-800"
+                : "bg-yellow-500 text-gray-800 cursor-pointer hover:bg-yellow-600"
+            }`}
           >
             Burger
           </span>
           <span
             onClick={() => handleBadgeClick("pizzas")}
-            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className={`inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium ${
+              selectedCategory === "pizzas"
+                ? "bg-yellow-700 text-white hover:bg-yellow-800"
+                : "bg-yellow-500 text-gray-800 cursor-pointer hover:bg-yellow-600"
+            }`}
           >
             Pizza
           </span>
           <span
             onClick={() => handleBadgeClick("fried chicken")}
-            className="inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium bg-yellow-500 text-white cursor-pointer hover:bg-yellow-600"
+            className={`inline-flex items-center gap-x-2 py-2 px-4 rounded-full text-sm font-medium ${
+              selectedCategory === "fried chicken"
+                ? "bg-yellow-700 text-white hover:bg-yellow-800"
+                : "bg-yellow-500 text-gray-800 cursor-pointer hover:bg-yellow-600"
+            }`}
           >
             Fried Chicken
           </span>
@@ -82,16 +98,16 @@ function ItemList({ submitProd, sendTheItems }) {
       </div>
 
       {/* Render items */}
-      <div className="flex flex-wrap justify-center mb-20">
+      <div className="flex flex-wrap justify-center mb-20 font-poppins">
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="relative flex flex-col mx-4 my-6 w-96 rounded-xl bg-white bg-clip-border text-gray-700 shadow-md"
+            className="relative flex flex-col mx-4 my-6 w-96 rounded-xl bg-white shadow-md overflow-hidden product-card transform transition-transform hover:scale-105"
           >
             <Link
               onClick={() => sendTheItems(item)}
               to="/item"
-              className="relative h-96 overflow-hidden rounded-t-xl bg-white bg-clip-border"
+              className="relative block h-72 overflow-hidden rounded-t-xl"
             >
               <img
                 src={item.img}
@@ -101,21 +117,19 @@ function ItemList({ submitProd, sendTheItems }) {
             </Link>
             <div className="p-6">
               <div className="mb-2 flex items-center justify-between">
-                <p className="block font-sans text-base font-medium leading-relaxed text-blue-gray-900 antialiased">
+                <p className="block text-base font-medium text-blue-gray-900">
                   {item.title}
                 </p>
-                <p className="block font-sans text-base font-medium leading-relaxed text-blue-gray-900 antialiased">
-                  {item.price}$
+                <p className="block text-base font-medium text-blue-gray-900">
+                  ${item.price}
                 </p>
               </div>
-              <p className="block font-sans text-sm font-normal leading-normal text-gray-700 antialiased opacity-75">
-                {item.description}
-              </p>
+              <p className="block text-sm text-gray-700">{item.description}</p>
             </div>
             <div className="p-6 pt-0">
               <button
                 onClick={() => submitProd(item)}
-                className="block w-full select-none rounded-lg bg-red-600 text-white py-3 px-6 text-center font-sans text-xs font-bold uppercase transition-transform hover:scale-105 focus:scale-105 focus:opacity-85 active:scale-100 active:opacity-85 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                className="block w-full rounded-lg bg-orange-600 text-white py-3 px-6 text-xs font-bold uppercase transition-transform hover:scale-105 focus:scale-105 focus:opacity-85 active:scale-100 active:opacity-85 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button"
               >
                 Add to Cart
