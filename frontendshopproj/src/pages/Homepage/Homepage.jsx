@@ -101,7 +101,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 font-poppins">
-        <h3 className="text-3xl font-semibold text-dark text-center mb-4">
+        <h3 className="text-3xl font-semibold text-orange-700 text-center mb-4">
           {selectedCategory
             ? `${
                 selectedCategory.charAt(0).toUpperCase() +
@@ -115,29 +115,34 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
               (item) => !selectedCategory || item.category === selectedCategory
             )
             .map((item, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-4">
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md p-4 border border-orange-200 transform transition-transform duration-500 hover:scale-105"
+              >
                 <img
                   src={item.img}
                   alt={item.title}
                   className="rounded-lg w-full h-40 object-cover mb-4"
                 />
-                <h4 className="text-lg font-semibold">{item.title}</h4>
-                <p className="text-gray-600">{item.description}</p>
-                <p className="mt-2 text-gray-900 font-bold">${item.price}</p>
+                <h4 className="text-lg font-semibold text-orange-800">
+                  {item.title}
+                </h4>
+                <p className="text-orange-600">{item.description}</p>
+                <p className="mt-2 text-orange-900 font-bold">${item.price}</p>
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={() => removeFromCart(item)}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded"
                   >
                     -
                   </button>
-                  <span className="mx-2">
+                  <span className="mx-2 text-orange-700">
                     {products.find((prod) => prod.id === item.id)?.quantity ||
                       0}
                   </span>
                   <button
                     onClick={() => addToCart(item)}
-                    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded"
                   >
                     +
                   </button>
@@ -146,27 +151,32 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
             ))}
         </div>
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-60">
-        <div className="max-w-md mx-auto md:mr-4">
-          <h3 className="text-xl font-semibold mb-4">About us</h3>
-          <p className="text-gray-700">
-            Taste Haven is your go-to fast-food destination for mouthwatering
-            meals that are quick, convenient, and bursting with flavor. We pride
-            ourselves on using fresh, locally-sourced ingredients to create a
-            diverse menu inspired by global culinary traditions. Whether you're
-            in the mood for a juicy burger, crispy fried chicken, or a
-            refreshing salad, Taste Haven has something for everyone, including
-            vegetarian and vegan options. Our welcoming atmosphere and friendly
-            staff ensure that every visit is a delightful experience for you and
-            your loved ones. At Taste Haven, we're committed to quality,
-            convenience, and community. Join us for a meal and discover why
-            Taste Haven is where flavor meets convenience, and every bite is an
-            adventure.
+
+      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-16 font-poppins">
+        <div className="max-w-md mx-auto md:mr-8">
+          <h3 className="text-2xl font-bold text-red-500 mb-6">About Us</h3>
+          <p className="text-gray-800 leading-relaxed">
+            Welcome to <span className="font-semibold">Taste Haven</span> - your
+            ultimate destination for fast, flavorful, and fresh meals. Our
+            diverse menu, inspired by global culinary traditions, features
+            everything from juicy burgers and crispy fried chicken to refreshing
+            salads, all crafted with locally-sourced ingredients.
+          </p>
+          <p className="text-gray-800 leading-relaxed mt-4">
+            Whether you're craving a hearty meal or a light bite, we have
+            something for everyone, including vegetarian and vegan options. Our
+            friendly staff and inviting atmosphere make every visit a delightful
+            experience. At Taste Haven, we are dedicated to quality,
+            convenience, and community.
+          </p>
+          <p className="text-gray-800 leading-relaxed mt-4">
+            Join us and discover why Taste Haven is where flavor meets
+            convenience, and every bite is an adventure.
           </p>
         </div>
         <img
-          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto border-2 border-red-500 rounded-full transition-transform duration-500 transform hover:scale-110"
-          alt="about-us"
+          className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto border-2 border-orange-500 rounded-3xl transition-transform duration-500 transform hover:scale-110"
+          alt="About Us"
           src={aboutus}
         />
       </div>

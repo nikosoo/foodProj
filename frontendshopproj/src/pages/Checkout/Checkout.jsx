@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import emailjs from "emailjs-com";
 
 const CheckoutPage = ({ products }) => {
   const [formData, setFormData] = useState({
@@ -34,6 +35,70 @@ const CheckoutPage = ({ products }) => {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleEmailSend = (orderDetails) => {
+    const emailParamsCustomer = {
+      name: formData.name,
+      email: formData.email,
+      address: formData.address,
+      order: orderDetails
+        .map(
+          (item) =>
+            `${item.quantity} x ${item.title} at $${item.price.toFixed(2)}`
+        )
+        .join(", "),
+    };
+
+    const emailParamsOwner = {
+      customer_name: formData.name,
+      customer_email: formData.email,
+      customer_address: formData.address,
+      order: orderDetails
+        .map(
+          (item) =>
+            `${item.quantity} x ${item.title} at $${item.price.toFixed(2)}`
+        )
+        .join(", "),
+    };
+
+    // Send email to customer
+    emailjs
+      .send(
+        "service_scppvll", // Replace with your EmailJS service ID
+        "template_9i51izo", // Replace with your EmailJS customer template ID
+        emailParamsCustomer,
+        "eoHa082tV_n8Rec-B" // Replace with your EmailJS user ID
+      )
+      .then((response) => {
+        console.log(
+          "Customer email successfully sent!",
+          response.status,
+          response.text
+        );
+      })
+      .catch((err) => {
+        console.error("There was an error sending the customer email:", err);
+      });
+
+    // Send email to owner
+    emailjs
+      .send(
+        "service_mcrcdwd", // Replace with your EmailJS service ID
+        "template_onnaeq8", // Replace with your EmailJS owner template ID
+        emailParamsOwner,
+        "Wmt-u9dXDhD5Ua8qr" // Replace with your EmailJS user ID
+      )
+      .then((response) => {
+        console.log(
+          "Owner email successfully sent!",
+          response.status,
+          response.text
+        );
+      })
+      .catch((err) => {
+        console.error("There was an error sending the owner email:", err);
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -81,6 +146,9 @@ const CheckoutPage = ({ products }) => {
         console.error("Payment failed:", error);
       } else {
         console.log("Payment successful");
+
+        // Send email with order details
+        handleEmailSend(products);
       }
     } catch (error) {
       console.error("An error occurred:", error);

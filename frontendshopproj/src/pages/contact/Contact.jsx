@@ -18,7 +18,7 @@ const Contact = () => {
 
     // Prepare email template parameters
     const templateParams = {
-      to_name: "Recipient Name", // Replace with recipient's name or email
+      to_name: "Nikos", // Replace with recipient's name or email
       from_name: formData.name,
       from_email: formData.email,
       reply_to: formData.email,
