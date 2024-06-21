@@ -11,7 +11,7 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:5000/api/register", {
+      await axios.post("https://food-proj-nine.vercel.app/api/register", {
         email,
         password,
       });

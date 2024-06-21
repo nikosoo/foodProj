@@ -110,7 +110,7 @@ const CheckoutPage = ({ products }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/create-payment-intent",
+        "https://food-proj-nine.vercel.app/api/create-payment-intent",
         {
           method: "POST",
           headers: {

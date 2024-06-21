@@ -13,10 +13,13 @@ const Login = ({ handleLoginSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://food-proj-nine.vercel.app/api/login",
+        {
+          email,
+          password,
+        }
+      );
       const token = response.data;
       localStorage.setItem("token", token);
       navigate("/");
