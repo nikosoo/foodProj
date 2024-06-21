@@ -129,7 +129,7 @@ function ItemList({ submitProd, sendTheItems }) {
             <div className="p-6 pt-0">
               <button
                 onClick={() => submitProd(item)}
-                className="block w-full rounded-lg bg-orange-600 text-white py-3 px-6 text-xs font-bold uppercase transition-transform hover:scale-105 focus:scale-105 focus:opacity-85 active:scale-100 active:opacity-85 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                className="block w-full rounded-lg bg-orange-600 text-white py-3 px-6 text-xs font-bold uppercase transition-colors hover:bg-orange-700 focus:bg-orange-700 active:bg-orange-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button"
               >
                 Add to Cart

@@ -29,7 +29,7 @@ const Login = ({ handleLoginSuccess }) => {
   };
 
   return (
-    <div className="flex justify-center py-20">
+    <div className="flex justify-center py-20 font-poppins">
       <div className="bg-gray-100 flex justify-center items-center h-screen">
         {/* Left: Image */}
         <div className="w-1/2 h-screen hidden lg:block">

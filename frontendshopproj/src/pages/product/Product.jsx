@@ -12,7 +12,7 @@ function Product({ showTheItems, submitProd }) {
   }
 
   return (
-    <div className="flex justify-center items-center mt-8">
+    <div className="flex justify-center items-center mt-8 font-poppins">
       {/* Left side: Image */}
       <div className="flex flex-col justify-center md:flex-row md:space-x-8 shadow-md rounded-lg overflow-hidden bg-white w-full py-20 px-20">
         <div className="w-full md:w-1/4">

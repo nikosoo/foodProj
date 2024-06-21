@@ -42,13 +42,13 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
     <>
       <div
         style={{ backgroundImage: `url(${bgImage})` }}
-        className="mx-auto w-[90%] rounded-lg py-40 mt-10"
+        className="mx-auto w-[90%] sm:w-[80%] rounded-lg py-20 sm:py-40 mt-10 bg-cover bg-center"
       >
-        <div className="flex flex-col justify-center w-[40%] ml-8 opacity-0 animate-fade-in font-poppins">
-          <h1 className="text-3xl font-bold text-gray-200 mt-8">
+        <div className="flex flex-col justify-center items-start w-full md:w-[40%] sm:w-[80%] px-4 sm:px-8 opacity-0 animate-fade-in font-poppins">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-200 mt-8">
             Savoring Every Flavor, Every Bite
           </h1>
-          <p className="text-lg text-gray-200 max-w-md mt-6 mb-4">
+          <p className="text-sm md:text-base lg:text-lg text-gray-200 mt-6 mb-4 max-sm:w-2/4">
             Welcome to Taste Haven! Explore an array of delicious flavors and
             culinary delights with us. Join our journey as we discover and savor
             every bite, igniting your taste buds along the way.
@@ -64,10 +64,10 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 font-poppins">
-        <h3 className="text-3xl font-semibold text-dark text-center mb-4">
+        <h3 className="text-2xl md:text-3xl font-semibold text-dark text-center mb-4">
           Explore Our Menu
         </h3>
-        <p className="text-lg text-center mb-8">
+        <p className="text-base md:text-lg text-center mb-8">
           Discover our menu of pizzas, burgers, and fried chicken, all made with
           the finest ingredients. Satisfy your cravings with cheesy pizzas,
           juicy burgers, and crispy fried chicken. Enjoy every bite!
@@ -75,7 +75,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
 
         <div className="mt-10 flex flex-col md:flex-row justify-center items-center mb-8 gap-8 font-poppins">
           {["burgers", "pizzas", "fried chicken"].map((category, index) => (
-            <div className="text-center" key={index}>
+            <div className="text-center flex flex-col items-center" key={index}>
               {data
                 .filter((item) => item.category === category)
                 .slice(0, 1)
@@ -84,7 +84,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
                     <img
                       src={item.img}
                       alt={item.title}
-                      className={`rounded-full w-32 h-32 object-cover mb-4 hover:scale-105 transition-transform duration-300 ${
+                      className={`rounded-full w-24 h-24 md:w-32 md:h-32 object-cover mb-4 hover:scale-105 transition-transform duration-300 ${
                         activeCategory === category
                           ? "border-4 border-orange-500"
                           : ""
@@ -93,7 +93,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
                     />
                   </div>
                 ))}
-              <p className="text-xl font-medium">{category}</p>
+              <p className="text-lg md:text-xl font-medium">{category}</p>
             </div>
           ))}
         </div>
@@ -101,7 +101,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 font-poppins">
-        <h3 className="text-3xl font-semibold text-orange-700 text-center mb-4">
+        <h3 className="text-2xl md:text-3xl font-semibold text-orange-700 text-center mb-4">
           {selectedCategory
             ? `${
                 selectedCategory.charAt(0).toUpperCase() +
@@ -122,7 +122,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
                 <img
                   src={item.img}
                   alt={item.title}
-                  className="rounded-lg w-full h-40 object-cover mb-4"
+                  className="rounded-lg w-full h-32 md:h-40 object-cover mb-4"
                 />
                 <h4 className="text-lg font-semibold text-orange-800">
                   {item.title}
@@ -152,7 +152,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-16 font-poppins">
+      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mt-20 mb-20 gap-16 font-poppins px-4">
         <div className="max-w-md mx-auto md:mr-8">
           <h3 className="text-2xl font-bold text-red-500 mb-6">About Us</h3>
           <p className="text-gray-800 leading-relaxed">
