@@ -8,6 +8,7 @@ const CheckoutPage = ({ products }) => {
     email: "",
     address: "",
   });
+  const [orderPlaced, setOrderPlaced] = useState(false); // New state variable
 
   const stripe = useStripe();
   const elements = useElements();
@@ -30,6 +31,10 @@ const CheckoutPage = ({ products }) => {
     }
 
     return total;
+  };
+
+  const calculateShippingFee = (total) => {
+    return total >= 60 ? 0 : 10;
   };
 
   const handleFormChange = (e) => {
@@ -109,6 +114,10 @@ const CheckoutPage = ({ products }) => {
     }
 
     try {
+      const total = calculateTotalPrice();
+      const shippingFee = calculateShippingFee(total);
+      const totalPriceWithShipping = total + shippingFee;
+
       const response = await fetch(
         "https://food-proj-nine.vercel.app/api/create-payment-intent",
         {
@@ -117,7 +126,7 @@ const CheckoutPage = ({ products }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount: calculateTotalPrice() * 100,
+            amount: totalPriceWithShipping * 100,
             currency: "usd",
           }),
         }
@@ -149,82 +158,118 @@ const CheckoutPage = ({ products }) => {
 
         // Send email with order details
         handleEmailSend(products);
+
+        // Update the order status
+        setOrderPlaced(true);
       }
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
 
+  const total = calculateTotalPrice();
+  const shippingFee = calculateShippingFee(total);
+  const totalPriceWithShipping = total + shippingFee;
+
   return (
-    <div className="flex justify-center mt-8">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6">Checkout</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">
-                Customer Information
-              </h2>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleFormChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleFormChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-            </div>
-            <div>
-              <textarea
-                name="address"
-                placeholder="Address"
-                value={formData.address}
-                onChange={handleFormChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              ></textarea>
-            </div>
-            <div>
-              <CardElement className="w-full p-2 border border-gray-300 rounded" />
-            </div>
+    <div className="flex justify-center my-20">
+      <div className="max-w-4xl w-full bg-white p-6 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold mb-6" style={{ color: "#ff7f00" }}>
+          Checkout
+        </h1>
+        {orderPlaced ? ( // Conditionally display the confirmation message
+          <div className="text-center p-6 bg-green-100 text-green-800 rounded-lg">
+            Thank you for your order! Your order has been placed successfully.
           </div>
-          <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
-            <div className="space-y-2">
-              {products.map((item, index) => (
-                <div key={index} className="flex justify-between">
-                  <p>{item.title}</p>
-                  <p>
-                    {item.quantity} x ${item.price.toFixed(2)}
+        ) : (
+          <div className="flex flex-wrap md:flex-nowrap">
+            <div className="w-full md:w-1/2 md:pr-6">
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  <div>
+                    <h2
+                      className="text-lg font-semibold mb-2"
+                      style={{ color: "#ff7f00" }}
+                    >
+                      Customer Information
+                    </h2>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      name="address"
+                      placeholder="Address"
+                      value={formData.address}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="w-full md:w-1/2 md:pl-6 mt-6 md:mt-0">
+              <div className="p-4 border border-gray-300 rounded">
+                <CardElement className="w-full p-2 border border-gray-300 rounded" />
+              </div>
+              <div className="mt-6">
+                <h2
+                  className="text-lg font-semibold mb-2"
+                  style={{ color: "#ff7f00" }}
+                >
+                  Order Summary
+                </h2>
+                <div className="space-y-2">
+                  {products.map((item, index) => (
+                    <div key={index} className="flex justify-between">
+                      <p>{item.title}</p>
+                      <p>
+                        {item.quantity} x ${item.price.toFixed(2)}
+                      </p>
+                    </div>
+                  ))}
+                  <div className="flex justify-between">
+                    <p>Shipping</p>
+                    <p>${shippingFee.toFixed(2)}</p>
+                  </div>
+                  <p
+                    className="text-lg font-semibold mt-2"
+                    style={{ color: "#ff7f00" }}
+                  >
+                    Total: ${totalPriceWithShipping.toFixed(2)}
                   </p>
                 </div>
-              ))}
-              <p className="text-lg font-semibold mt-2">
-                Total: ${calculateTotalPrice().toFixed(2)}
-              </p>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mt-4"
+                >
+                  Place Order
+                </button>
+              </div>
             </div>
           </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Place Order
-            </button>
-          </div>
-        </form>
+        )}
       </div>
     </div>
   );
