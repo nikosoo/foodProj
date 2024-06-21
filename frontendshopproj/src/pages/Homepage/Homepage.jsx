@@ -13,7 +13,9 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
 
   const fetchDataFromDatabase = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/collections");
+      const response = await fetch(
+        "https://food-proj-nine.vercel.app/api/collections"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
