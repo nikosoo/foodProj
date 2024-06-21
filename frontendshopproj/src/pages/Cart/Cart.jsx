@@ -13,8 +13,8 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
   return (
     <div className="container mx-auto max-w-4xl mt-8 px-4 mb-[25%]">
       <div className="overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="px-6 py-3">Product name</th>
               <th className="px-6 py-3">Image</th>
@@ -28,11 +28,8 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
           </thead>
           <tbody>
             {showProducts.map((item, index) => (
-              <tr
-                key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   {item.title}
                 </td>
                 <td className="px-6 py-4">
