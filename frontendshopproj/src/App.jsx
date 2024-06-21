@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -19,10 +19,20 @@ const stripePromise = loadStripe(
 );
 
 function App() {
-  const [products, setProducts] = useState([]);
+  // Load products from localStorage on initial load
+  const initialProducts = JSON.parse(localStorage.getItem("cartItems")) || [];
+  const [products, setProducts] = useState(initialProducts);
   const [showItem, setShowItems] = useState([]);
   const [userEmail, setUserEmail] = useState("");
   const [cartItemsCount, setCartItemsCount] = useState(0);
+
+  // Update localStorage whenever products change
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(products));
+    // Update cartItemsCount based on products state
+    const totalCount = products.reduce((acc, curr) => acc + curr.quantity, 0);
+    setCartItemsCount(totalCount);
+  }, [products]);
 
   const addToCart = (selectedItem) => {
     const existingProduct = products.find(
@@ -39,7 +49,6 @@ function App() {
     } else {
       setProducts([...products, { ...selectedItem, quantity: 1 }]);
     }
-    setCartItemsCount(cartItemsCount + 1);
   };
 
   const removeFromCart = (selectedItem) => {
@@ -57,7 +66,6 @@ function App() {
     } else {
       setProducts(products.filter((product) => product.id !== selectedItem.id));
     }
-    setCartItemsCount(cartItemsCount - 1);
   };
 
   const sendItems = (item) => {

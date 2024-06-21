@@ -44,7 +44,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
     <>
       <div
         style={{ backgroundImage: `url(${bgImage})` }}
-        className="mx-auto w-[90%] sm:w-[80%] rounded-lg py-20 sm:py-40 mt-10 bg-cover bg-center"
+        className="mx-auto w-[90%] sm:w-[80%] rounded-lg py-20 sm:py-40 mt-40 bg-cover bg-center"
       >
         <div className="flex flex-col justify-center items-start w-full md:w-[40%] sm:w-[80%] px-4 sm:px-8 opacity-0 animate-fade-in font-poppins">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-200 mt-8">

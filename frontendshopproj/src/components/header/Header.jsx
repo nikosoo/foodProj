@@ -11,7 +11,7 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
   };
 
   return (
-    <div className="bg-white font-poppins">
+    <div className="bg-white font-poppins fixed top-0 left-0 w-full z-10 shadow-md">
       <nav className="container mx-auto py-6 px-4 md:px-8">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center text-gray-800">

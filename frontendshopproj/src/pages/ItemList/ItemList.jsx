@@ -54,7 +54,7 @@ function ItemList({ submitProd, sendTheItems }) {
   return (
     <>
       {/* Badge categories */}
-      <div className="flex justify-center mt-12 mb-10 font-poppins">
+      <div className="flex justify-center mt-40 mb-10 font-poppins">
         <div className="flex space-x-2">
           <span
             onClick={allItems}

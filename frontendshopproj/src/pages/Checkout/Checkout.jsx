@@ -166,7 +166,7 @@ const CheckoutPage = ({ products }) => {
   };
 
   return (
-    <div className="flex justify-center my-20">
+    <div className="flex justify-center mt-40 mb-20">
       <div className="max-w-md w-full p-6 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-orange-700">Checkout</h1>
         <form onSubmit={handleSubmit}>

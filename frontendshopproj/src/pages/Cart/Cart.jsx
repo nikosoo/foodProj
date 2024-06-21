@@ -11,7 +11,7 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl mt-8 px-4 mb-[25%]">
+    <div className="container mx-auto max-w-4xl mt-40 px-4 mb-[25%]">
       <div className="overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
