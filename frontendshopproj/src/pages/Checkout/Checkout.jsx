@@ -13,21 +13,26 @@ const CheckoutPage = ({ products }) => {
   const elements = useElements();
 
   const calculateTotalPrice = () => {
-    let total = 0;
+    let subtotal = 0;
 
     if (!Array.isArray(products)) {
       console.error("products is not an array:", products);
-      return total;
+      return subtotal;
     }
 
+    // Calculate subtotal
     for (let i = 0; i < products.length; i++) {
       const item = products[i];
       if (typeof item.price !== "number" || typeof item.quantity !== "number") {
         console.error("Invalid item data:", item);
         continue;
       }
-      total += item.price * item.quantity;
+      subtotal += item.price * item.quantity;
     }
+
+    // Add shipping cost
+    const shippingCost = 10; // $10 flat shipping cost
+    const total = subtotal >= 60 ? subtotal : subtotal + shippingCost;
 
     return total;
   };
@@ -48,6 +53,7 @@ const CheckoutPage = ({ products }) => {
             `${item.quantity} x ${item.title} at $${item.price.toFixed(2)}`
         )
         .join(", "),
+      shipping: calculateTotalPrice() >= 60 ? "Free Shipping" : "$10 Shipping",
     };
 
     const emailParamsOwner = {
@@ -60,6 +66,7 @@ const CheckoutPage = ({ products }) => {
             `${item.quantity} x ${item.title} at $${item.price.toFixed(2)}`
         )
         .join(", "),
+      shipping: calculateTotalPrice() >= 60 ? "Free Shipping" : "$10 Shipping",
     };
 
     // Send email to customer
@@ -117,7 +124,7 @@ const CheckoutPage = ({ products }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount: calculateTotalPrice() * 100,
+            amount: calculateTotalPrice() * 100, // Convert to cents
             currency: "usd",
           }),
         }
@@ -160,7 +167,7 @@ const CheckoutPage = ({ products }) => {
 
   return (
     <div className="flex justify-center my-20">
-      <div className="max-w-md w-full  p-6 rounded-lg shadow-lg">
+      <div className="max-w-md w-full p-6 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-orange-700">Checkout</h1>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
@@ -216,6 +223,9 @@ const CheckoutPage = ({ products }) => {
                   </p>
                 </div>
               ))}
+              <p className="text-lg font-semibold mt-2 text-orange-700">
+                Shipping: {calculateTotalPrice() >= 60 ? "Free" : "$10"}
+              </p>
               <p className="text-lg font-semibold mt-2 text-orange-700">
                 Total: ${calculateTotalPrice().toFixed(2)}
               </p>
