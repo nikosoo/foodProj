@@ -9,7 +9,6 @@ function ItemList({ submitProd, sendTheItems }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data from your database endpoint
         const response = await fetch(
           "https://food-proj-nine.vercel.app/api/collections"
         );
@@ -18,23 +17,21 @@ function ItemList({ submitProd, sendTheItems }) {
         }
         const data = await response.json();
         setItems(data);
+        sendTheItems(data); // Send items to the parent component
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [sendTheItems]);
 
   const handleBadgeClick = (category) => {
     setSelectedCategory(category);
   };
 
   const filterItemsByCategory = (categoryId) => {
-    return items.filter((item) => {
-      // Adjust filtering logic based on your database structure
-      return item.category === categoryId;
-    });
+    return items.filter((item) => item.category === categoryId);
   };
 
   const categoryOrder = ["burgers", "pizzas", "fried chicken"];
@@ -51,9 +48,12 @@ function ItemList({ submitProd, sendTheItems }) {
     setSelectedCategory(null);
   };
 
+  const generateSlug = (name) => {
+    return name.toLowerCase().replace(/\s+/g, "-");
+  };
+
   return (
     <>
-      {/* Badge categories */}
       <div className="flex justify-center mt-40 mb-10 font-poppins">
         <div className="flex space-x-2">
           <span
@@ -99,7 +99,6 @@ function ItemList({ submitProd, sendTheItems }) {
         </div>
       </div>
 
-      {/* Render items */}
       <div className="flex flex-wrap justify-center mb-20 font-poppins">
         {filteredItems.map((item) => (
           <div
@@ -108,7 +107,7 @@ function ItemList({ submitProd, sendTheItems }) {
           >
             <Link
               onClick={() => sendTheItems(item)}
-              to="/item"
+              to={`/item/${generateSlug(item.title)}`}
               className="relative block h-72 overflow-hidden rounded-t-xl"
             >
               <img

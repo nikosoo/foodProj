@@ -19,17 +19,33 @@ const stripePromise = loadStripe(
 );
 
 function App() {
-  // Load products from localStorage on initial load
   const initialProducts = JSON.parse(localStorage.getItem("cartItems")) || [];
   const [products, setProducts] = useState(initialProducts);
-  const [showItem, setShowItems] = useState([]);
+  const [items, setItems] = useState([]);
   const [userEmail, setUserEmail] = useState("");
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
-  // Update localStorage whenever products change
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://food-proj-nine.vercel.app/api/collections"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(products));
-    // Update cartItemsCount based on products state
     const totalCount = products.reduce((acc, curr) => acc + curr.quantity, 0);
     setCartItemsCount(totalCount);
   }, [products]);
@@ -66,11 +82,6 @@ function App() {
     } else {
       setProducts(products.filter((product) => product.id !== selectedItem.id));
     }
-  };
-
-  const sendItems = (item) => {
-    setShowItems(item);
-    console.log(item);
   };
 
   const handleLoginSuccess = (email) => {
@@ -111,12 +122,12 @@ function App() {
         />
         <Route
           path="/products"
-          element={<ItemList sendTheItems={sendItems} submitProd={addToCart} />}
+          element={<ItemList sendTheItems={setItems} submitProd={addToCart} />}
         />
         <Route path="/contact" element={<Contact />} />
         <Route
-          path="/item"
-          element={<Product submitProd={addToCart} showTheItems={showItem} />}
+          path="/item/:productName"
+          element={<Product submitProd={addToCart} showTheItems={items} />}
         />
         <Route
           path="/register"
