@@ -43,14 +43,14 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
                 <td className="px-6 py-4 flex items-center">
                   <button
                     onClick={() => removeFromCart(item)}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-2 rounded"
                   >
                     -
                   </button>
                   <span className="mx-2">{item.quantity}</span>
                   <button
                     onClick={() => addToCart(item)}
-                    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-2 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-2 rounded"
                   >
                     +
                   </button>
@@ -70,13 +70,13 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
         <div className="flex justify-between items-center mt-4">
           <p className="text-lg font-semibold text-gray-800">
             Total:{" "}
-            <span className="text-red-600">
+            <span className="text-orange-600">
               {calculateTotalPrice().toFixed(2)}$
             </span>
           </p>
           <Link
             to="/checkout"
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded"
           >
             Proceed to checkout
           </Link>

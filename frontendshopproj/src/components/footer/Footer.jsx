@@ -16,13 +16,13 @@ function Footer() {
   };
 
   return (
-    <section className="bg-gradient-to-r from-gray-800 to-gray-600 font-poppins">
+    <section className="bg-gradient-to-orange font-poppins">
       <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Column 1: Logo with Description */}
-          <div className="md:text-left">
+          <div className="flex flex-col items-center md:items-start">
             <img src={logo} alt="Logo" className="w-20 h-20 mb-4" />
-            <p className="text-white text-sm">
+            <p className="text-white text-sm text-center md:text-left">
               Delicious food, delivered fast!
             </p>
           </div>

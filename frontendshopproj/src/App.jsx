@@ -12,6 +12,7 @@ import Product from "./pages/product/Product";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import CheckoutPage from "./pages/Checkout/Checkout";
+import AdminPage from "./pages/Admin/AdminPage";
 import "./App.css";
 
 const stripePromise = loadStripe(
@@ -129,6 +130,7 @@ function App() {
           path="/item/:productName"
           element={<Product submitProd={addToCart} showTheItems={items} />}
         />
+        <Route path="/admin" element={<AdminPage />} />
         <Route
           path="/register"
           element={<Register handleLoginSuccess={handleLoginSuccess} />}
