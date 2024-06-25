@@ -1,4 +1,3 @@
-// Load environment variables from .env file
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,7 +14,9 @@ app.use(cors());
 
 // Connect to MongoDB using environment variable
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    dbName: "test", // Specify the database name
+  })
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -42,6 +43,8 @@ const CollectionSchema = new mongoose.Schema({
   title: String,
   description: String,
   price: Number,
+  category: String,
+  img: String,
 });
 
 const Collection = mongoose.model("Collection", CollectionSchema);
@@ -63,14 +66,76 @@ app.post("/api/create-payment-intent", async (req, res) => {
   }
 });
 
-// Endpoint to fetch collections from MongoDB
+// Endpoint to create a new collection item
+app.post("/api/collections", async (req, res) => {
+  const { id, title, description, price, category, img } = req.body;
+
+  try {
+    const newCollection = new Collection({
+      id,
+      title,
+      description,
+      price,
+      category,
+      img,
+    });
+    await newCollection.save();
+    res.status(201).json(newCollection);
+  } catch (error) {
+    console.error("Error creating collection:", error);
+    res.status(500).json({ error: "Failed to create collection" });
+  }
+});
+
+// Endpoint to update an existing collection item
+app.put("/api/collections/:id", async (req, res) => {
+  const collectionId = req.params.id;
+  const { title, description, price, category, img } = req.body;
+
+  try {
+    const updatedCollection = await Collection.findByIdAndUpdate(
+      collectionId,
+      { title, description, price, category, img },
+      { new: true }
+    );
+
+    if (!updatedCollection) {
+      return res.status(404).json({ error: "Collection not found" });
+    }
+
+    res.json(updatedCollection);
+  } catch (error) {
+    console.error("Error updating collection:", error);
+    res.status(500).json({ error: "Failed to update collection" });
+  }
+});
+
+// Endpoint to delete a collection item
+app.delete("/api/collections/:id", async (req, res) => {
+  const collectionId = req.params.id;
+
+  try {
+    const deletedCollection = await Collection.findByIdAndDelete(collectionId);
+
+    if (!deletedCollection) {
+      return res.status(404).json({ error: "Collection not found" });
+    }
+
+    res.json({ message: "Collection deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting collection:", error);
+    res.status(500).json({ error: "Failed to delete collection" });
+  }
+});
+
+// Endpoint to fetch all collection items
 app.get("/api/collections", async (req, res) => {
   try {
     const collections = await Collection.find({});
     res.json(collections);
   } catch (error) {
-    console.error("Error fetching data from MongoDB", error);
-    res.status(500).json({ error: "Failed to fetch data" });
+    console.error("Error fetching collections:", error);
+    res.status(500).json({ error: "Failed to fetch collections" });
   }
 });
 
