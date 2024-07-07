@@ -78,6 +78,19 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
           <ul className="hidden md:flex items-center space-x-8 relative">
             {userEmail ? (
               <>
+                <li>
+                  <Link
+                    to="/cart"
+                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
+                  >
+                    <img src={basket} width="30px" alt="basket" />
+                    {cartItemsCount > 0 && (
+                      <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                        {cartItemsCount}
+                      </span>
+                    )}
+                  </Link>
+                </li>
                 <li className="text-gray-800">Logged in as: {userEmail}</li>
                 <li>
                   <button
@@ -157,6 +170,20 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
               Contact Us
             </Link>
           </li>
+          <li>
+            <Link
+              to="/cart"
+              className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
+              onClick={() => setIsOpen(false)} // Close dropdown on click
+            >
+              <img src={basket} width="30px" alt="basket" />
+              {cartItemsCount > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                  {cartItemsCount}
+                </span>
+              )}
+            </Link>
+          </li>
 
           {userEmail && (
             <li className="text-gray-800">Logged in as: {userEmail}</li>
@@ -173,15 +200,6 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
           )}
           {!userEmail && (
             <>
-              <li>
-                <Link
-                  to="/cart"
-                  className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <img src={basket} width="30px" alt="basket" />
-                </Link>
-              </li>
               <li>
                 <Link
                   to="/login"

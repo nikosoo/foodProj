@@ -32,23 +32,23 @@ const Login = ({ handleLoginSuccess }) => {
   };
 
   return (
-    <div className="flex justify-center py-40 font-poppins">
-      <div className="bg-gray-100 flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen font-poppins">
+      <div className="bg-gray-100 flex justify-center items-center w-full max-w-7xl mx-auto shadow-lg rounded-lg">
         {/* Left: Image */}
-        <div className="w-1/2 h-screen hidden lg:block">
+        <div className="w-1/2 h-full hidden lg:block">
           <img
             src={bowlImage}
             alt="Placeholder"
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full rounded-l-lg"
           />
         </div>
         {/* Right: Login Form */}
-        <div className="lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
-          <h1 className="text-2xl font-semibold mb-4">Login</h1>
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <div className="lg:p-24 md:p-20 sm:p-16 p-12 w-full lg:w-1/2">
+          <h1 className="text-5xl font-semibold mb-10">Login</h1>
+          {error && <p className="text-red-500 text-center mb-6">{error}</p>}
           <form onSubmit={handleLogin}>
-            {/* Username Input */}
-            <div className="mb-4">
+            {/* Email Input */}
+            <div className="mb-10">
               <label htmlFor="email" className="block text-gray-600">
                 Email
               </label>
@@ -56,14 +56,14 @@ const Login = ({ handleLoginSuccess }) => {
                 type="email"
                 id="email"
                 name="email"
-                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
                 autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             {/* Password Input */}
-            <div className="mb-4">
+            <div className="mb-10">
               <label htmlFor="password" className="block text-gray-600">
                 Password
               </label>
@@ -71,43 +71,28 @@ const Login = ({ handleLoginSuccess }) => {
                 type="password"
                 id="password"
                 name="password"
-                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-md py-3 px-4 focus:outline-none focus:border-blue-500"
                 autoComplete="off"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {/* Remember Me Checkbox */}
-            <div className="mb-4 flex items-center">
-              <input
-                type="checkbox"
-                id="remember"
-                name="remember"
-                className="text-blue-500"
-              />
-              <label htmlFor="remember" className="text-gray-600 ml-2">
-                Remember Me
-              </label>
-            </div>
-            {/* Forgot Password Link */}
-            <div className="mb-6 text-orange-500">
-              <a href="#" className="hover:underline">
-                Forgot Password?
-              </a>
-            </div>
             {/* Login Button */}
             <button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md py-3 px-6 w-full"
             >
               Login
             </button>
           </form>
           {/* Sign up Link */}
-          <div className="mt-6 text-orange-500 text-center">
-            <Link to="/register" className="hover:underline">
-              Sign up Here
-            </Link>
+          <div className="mt-10 text-center">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-orange-500 hover:underline">
+                Sign up Here
+              </Link>
+            </p>
           </div>
         </div>
       </div>

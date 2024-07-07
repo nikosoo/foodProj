@@ -94,62 +94,68 @@ function App() {
   };
 
   return (
-    <Router>
-      <Header
-        userEmail={userEmail}
-        handleLogout={handleLogout}
-        cartItemsCount={cartItemsCount}
-      />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Homepage
-              products={products}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
+    <div className="flex flex-col min-h-screen">
+      <Router>
+        <Header
+          userEmail={userEmail}
+          handleLogout={handleLogout}
+          cartItemsCount={cartItemsCount}
+        />
+        <main className="flex-grow">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Homepage
+                  products={products}
+                  addToCart={addToCart}
+                  removeFromCart={removeFromCart}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              showProducts={products}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  showProducts={products}
+                  addToCart={addToCart}
+                  removeFromCart={removeFromCart}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/products"
-          element={<ItemList sendTheItems={setItems} submitProd={addToCart} />}
-        />
-        <Route path="/contact" element={<Contact />} />
-        <Route
-          path="/item/:productName"
-          element={<Product submitProd={addToCart} showTheItems={items} />}
-        />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route
-          path="/register"
-          element={<Register handleLoginSuccess={handleLoginSuccess} />}
-        />
-        <Route
-          path="/login"
-          element={<Login handleLoginSuccess={handleLoginSuccess} />}
-        />
-        <Route
-          path="/checkout"
-          element={
-            <Elements stripe={stripePromise}>
-              <CheckoutPage products={products} />
-            </Elements>
-          }
-        />
-      </Routes>
-      <Footer />
-    </Router>
+            <Route
+              path="/products"
+              element={
+                <ItemList sendTheItems={setItems} submitProd={addToCart} />
+              }
+            />
+            <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/item/:productName"
+              element={<Product submitProd={addToCart} showTheItems={items} />}
+            />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route
+              path="/register"
+              element={<Register handleLoginSuccess={handleLoginSuccess} />}
+            />
+            <Route
+              path="/login"
+              element={<Login handleLoginSuccess={handleLoginSuccess} />}
+            />
+            <Route
+              path="/checkout"
+              element={
+                <Elements stripe={stripePromise}>
+                  <CheckoutPage products={products} />
+                </Elements>
+              }
+            />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+    </div>
   );
 }
 
