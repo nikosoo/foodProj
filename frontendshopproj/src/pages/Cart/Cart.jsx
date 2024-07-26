@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { removeFromCart, addToCart } from "../../slices/cartSlice";
 
-function Cart({ showProducts, addToCart, removeFromCart }) {
+function Cart() {
+  const dispatch = useDispatch();
+  const showProducts = useSelector((state) => state.cart);
+
   const calculateTotalPrice = () => {
-    let total = 0;
-    showProducts.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total;
+    return showProducts.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   };
 
   return (
@@ -16,23 +19,7 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
         <div className="sm:max-w-7xl md:max-w-7xl lg:max-w-7xl xl:max-w-7xl">
           <table className="w-full text-xs sm:text-xxs lg:text-xl text-left rtl:text-right text-gray-500 lg:rounded-lg">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
-                  Product
-                </th>
-                <th className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
-                  Price
-                </th>
-                <th className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
-                  Qty
-                </th>
-                <th className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
-                  Total
-                </th>
-                <th className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
-                  <span className="sr-only">Edit</span>
-                </th>
-              </tr>
+              <tr>{/* Table headers */}</tr>
             </thead>
             <tbody>
               {showProducts.map((item, index) => (
@@ -53,14 +40,13 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
                       </div>
                     </div>
                   </td>
-
                   <td className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
                     ${item.price.toFixed(2)}
                   </td>
                   <td className="px-2 py-2 sm:px-2 sm:py-2 lg:px-5 lg:py-4">
                     <div className="flex items-center">
                       <button
-                        onClick={() => removeFromCart(item)}
+                        onClick={() => dispatch(removeFromCart(item))}
                         className="bg-orange-500 hover:bg-orange-600 text-white font-semibold w-6 h-6 sm:w-5 sm:h-5 lg:w-8 lg:h-8 rounded text-xs sm:text-xxxs lg:text-base flex items-center justify-center"
                       >
                         -
@@ -69,7 +55,7 @@ function Cart({ showProducts, addToCart, removeFromCart }) {
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => addToCart(item)}
+                        onClick={() => dispatch(addToCart(item))}
                         className="bg-orange-500 hover:bg-orange-600 text-white font-semibold w-6 h-6 sm:w-5 sm:h-5 lg:w-8 lg:h-8 rounded text-xs sm:text-xxxs lg:text-base flex items-center justify-center"
                       >
                         +

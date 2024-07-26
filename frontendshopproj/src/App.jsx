@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "./components/header/Header";
 import ItemList from "./pages/ItemList/ItemList";
 import Cart from "./pages/Cart/Cart";
@@ -13,6 +14,8 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import CheckoutPage from "./pages/Checkout/Checkout";
 import AdminPage from "./pages/Admin/AdminPage";
+import { addToCart, removeFromCart, setCart } from "./slices/cartSlice";
+import { setProducts } from "./slices/productsSlice";
 import "./App.css";
 
 const stripePromise = loadStripe(
@@ -20,11 +23,15 @@ const stripePromise = loadStripe(
 );
 
 function App() {
-  const initialProducts = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const [products, setProducts] = useState(initialProducts);
-  const [items, setItems] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
-  const [cartItemsCount, setCartItemsCount] = useState(0);
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
+  const cartItems = useSelector((state) => state.cart);
+  const userEmail = useSelector((state) => state.userEmail);
+
+  const cartItemsCount = cartItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,61 +43,21 @@ function App() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setItems(data);
+        dispatch(setProducts(data));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(products));
-    const totalCount = products.reduce((acc, curr) => acc + curr.quantity, 0);
-    setCartItemsCount(totalCount);
-  }, [products]);
-
-  const addToCart = (selectedItem) => {
-    const existingProduct = products.find(
-      (product) => product.id === selectedItem.id
-    );
-    if (existingProduct) {
-      setProducts(
-        products.map((product) =>
-          product.id === selectedItem.id
-            ? { ...product, quantity: product.quantity + 1 }
-            : product
-        )
-      );
-    } else {
-      setProducts([...products, { ...selectedItem, quantity: 1 }]);
-    }
-  };
-
-  const removeFromCart = (selectedItem) => {
-    const existingProduct = products.find(
-      (product) => product.id === selectedItem.id
-    );
-    if (existingProduct.quantity > 1) {
-      setProducts(
-        products.map((product) =>
-          product.id === selectedItem.id
-            ? { ...product, quantity: product.quantity - 1 }
-            : product
-        )
-      );
-    } else {
-      setProducts(products.filter((product) => product.id !== selectedItem.id));
-    }
-  };
+  }, [dispatch]);
 
   const handleLoginSuccess = (email) => {
-    setUserEmail(email);
+    dispatch({ type: "user/setEmail", payload: email });
   };
 
   const handleLogout = () => {
-    setUserEmail("");
+    dispatch({ type: "user/removeEmail" });
   };
 
   return (
@@ -107,9 +74,8 @@ function App() {
               path="/"
               element={
                 <Homepage
-                  products={products}
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
+                  addToCart={(item) => dispatch(addToCart(item))}
+                  removeFromCart={(item) => dispatch(removeFromCart(item))}
                 />
               }
             />
@@ -117,23 +83,14 @@ function App() {
               path="/cart"
               element={
                 <Cart
-                  showProducts={products}
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
+                  addToCart={(item) => dispatch(addToCart(item))}
+                  removeFromCart={(item) => dispatch(removeFromCart(item))}
                 />
               }
             />
-            <Route
-              path="/products"
-              element={
-                <ItemList sendTheItems={setItems} submitProd={addToCart} />
-              }
-            />
+            <Route path="/products" element={<ItemList />} />
             <Route path="/contact" element={<Contact />} />
-            <Route
-              path="/item/:productName"
-              element={<Product submitProd={addToCart} showTheItems={items} />}
-            />
+            <Route path="/item/:productName" element={<Product />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route
               path="/register"
@@ -147,7 +104,7 @@ function App() {
               path="/checkout"
               element={
                 <Elements stripe={stripePromise}>
-                  <CheckoutPage products={products} />
+                  <CheckoutPage products={cartItems} />
                 </Elements>
               }
             />

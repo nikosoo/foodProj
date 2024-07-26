@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../slices/cartSlice";
 
-function Product({ showTheItems, submitProd }) {
+function Product({ showTheItems }) {
   const { productName } = useParams();
   const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -25,7 +28,7 @@ function Product({ showTheItems, submitProd }) {
       }
     };
 
-    if (Array.isArray(showTheItems) && showTheItems.length > 0) {
+    if (showTheItems && showTheItems.length > 0) {
       const item = showTheItems.find(
         (item) => item.title.toLowerCase().replace(/\s+/g, "-") === productName
       );
@@ -40,6 +43,10 @@ function Product({ showTheItems, submitProd }) {
   if (!selectedItem) {
     return <div>Loading...</div>;
   }
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(selectedItem));
+  };
 
   return (
     <div className="flex justify-center items-center mt-20 font-poppins px-4 sm:px-6 lg:px-8 mt-40">
@@ -62,7 +69,7 @@ function Product({ showTheItems, submitProd }) {
             ${selectedItem.price.toFixed(2)}
           </p>
           <button
-            onClick={() => submitProd(selectedItem)}
+            onClick={handleAddToCart}
             className="mt-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg text-lg self-start"
           >
             Order Now

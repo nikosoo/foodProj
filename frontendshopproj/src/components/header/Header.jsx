@@ -1,14 +1,29 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/fast-food-pin-svgrepo-com.svg";
 import basket from "../../assets/images/basket.svg";
+import { logout } from "../../slices/authSlice"; // Make sure the path is correct
 
-function Header({ userEmail, handleLogout, cartItemsCount }) {
+function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch(); // Hook to dispatch actions
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
+
+  const getCartItemsCount = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout()); // Dispatch the logout action
+  };
+
+  console.log("User:", user);
 
   return (
     <div className="bg-white font-poppins fixed top-0 left-0 w-full z-10 shadow-md">
@@ -21,6 +36,7 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
 
           <button
             onClick={toggleDropdown}
+            aria-expanded={isOpen}
             className="md:hidden text-gray-800 focus:outline-none"
           >
             <svg
@@ -76,26 +92,26 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
           </ul>
 
           <ul className="hidden md:flex items-center space-x-8 relative">
-            {userEmail ? (
+            <li>
+              <Link
+                to="/cart"
+                className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
+              >
+                <img src={basket} width="30px" alt="basket" />
+                {getCartItemsCount() > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                    {getCartItemsCount()}
+                  </span>
+                )}
+              </Link>
+            </li>
+            {user ? (
               <>
-                <li>
-                  <Link
-                    to="/cart"
-                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
-                  >
-                    <img src={basket} width="30px" alt="basket" />
-                    {cartItemsCount > 0 && (
-                      <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                        {cartItemsCount}
-                      </span>
-                    )}
-                  </Link>
-                </li>
-                <li className="text-gray-800">Logged in as: {userEmail}</li>
+                <li className="text-gray-800">Logged in as: {user}</li>
                 <li>
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline relative"
-                    onClick={handleLogout}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={handleLogout} // Call handleLogout on click
                   >
                     Logout
                   </button>
@@ -103,19 +119,6 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
               </>
             ) : (
               <>
-                <li>
-                  <Link
-                    to="/cart"
-                    className="text-gray-800 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-800 relative"
-                  >
-                    <img src={basket} width="30px" alt="basket" />
-                    {cartItemsCount > 0 && (
-                      <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                        {cartItemsCount}
-                      </span>
-                    )}
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/login"
@@ -177,34 +180,30 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
               onClick={() => setIsOpen(false)} // Close dropdown on click
             >
               <img src={basket} width="30px" alt="basket" />
-              {cartItemsCount > 0 && (
+              {getCartItemsCount() > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                  {cartItemsCount}
+                  {getCartItemsCount()}
                 </span>
               )}
             </Link>
           </li>
 
-          {userEmail && (
-            <li className="text-gray-800">Logged in as: {userEmail}</li>
-          )}
-          {userEmail && (
+          {user && <li className="text-gray-800">Logged in as: {user}</li>}
+          {user ? (
             <li>
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleLogout}
+                onClick={handleLogout} // Call handleLogout on click
               >
                 Logout
               </button>
             </li>
-          )}
-          {!userEmail && (
+          ) : (
             <>
               <li>
                 <Link
                   to="/login"
                   className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  onClick={() => setIsOpen(false)}
                 >
                   Login
                 </Link>
@@ -212,8 +211,7 @@ function Header({ userEmail, handleLogout, cartItemsCount }) {
               <li>
                 <Link
                   to="/register"
-                  className="border-orange-500 border hover:border-orange-600 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  onClick={() => setIsOpen(false)}
+                  className="border border-orange-500 hover:bg-orange-500 hover:text-white text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Register
                 </Link>

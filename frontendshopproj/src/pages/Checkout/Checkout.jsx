@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import emailjs from "emailjs-com";
+import { useSelector } from "react-redux";
 
-const CheckoutPage = ({ products }) => {
+const CheckoutPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -11,29 +12,24 @@ const CheckoutPage = ({ products }) => {
 
   const stripe = useStripe();
   const elements = useElements();
+  const cartItems = useSelector((state) => state.cart);
 
   const calculateTotalPrice = () => {
     let subtotal = 0;
-
-    if (!Array.isArray(products)) {
-      console.error("products is not an array:", products);
+    if (!Array.isArray(cartItems)) {
+      console.error("cartItems is not an array:", cartItems);
       return subtotal;
     }
-
-    // Calculate subtotal
-    for (let i = 0; i < products.length; i++) {
-      const item = products[i];
+    for (let i = 0; i < cartItems.length; i++) {
+      const item = cartItems[i];
       if (typeof item.price !== "number" || typeof item.quantity !== "number") {
         console.error("Invalid item data:", item);
         continue;
       }
       subtotal += item.price * item.quantity;
     }
-
-    // Add shipping cost
-    const shippingCost = 10; // $10 flat shipping cost
+    const shippingCost = 10;
     const total = subtotal >= 60 ? subtotal : subtotal + shippingCost;
-
     return total;
   };
 
@@ -69,13 +65,12 @@ const CheckoutPage = ({ products }) => {
       shipping: calculateTotalPrice() >= 60 ? "Free Shipping" : "$10 Shipping",
     };
 
-    // Send email to customer
     emailjs
       .send(
-        "service_scppvll", // Replace with your EmailJS service ID
-        "template_9i51izo", // Replace with your EmailJS customer template ID
+        "service_scppvll",
+        "template_9i51izo",
         emailParamsCustomer,
-        "eoHa082tV_n8Rec-B" // Replace with your EmailJS user ID
+        "eoHa082tV_n8Rec-B"
       )
       .then((response) => {
         console.log(
@@ -88,13 +83,12 @@ const CheckoutPage = ({ products }) => {
         console.error("There was an error sending the customer email:", err);
       });
 
-    // Send email to owner
     emailjs
       .send(
-        "service_mcrcdwd", // Replace with your EmailJS service ID
-        "template_onnaeq8", // Replace with your EmailJS owner template ID
+        "service_mcrcdwd",
+        "template_onnaeq8",
         emailParamsOwner,
-        "Wmt-u9dXDhD5Ua8qr" // Replace with your EmailJS user ID
+        "Wmt-u9dXDhD5Ua8qr"
       )
       .then((response) => {
         console.log(
@@ -110,11 +104,9 @@ const CheckoutPage = ({ products }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!stripe || !elements) {
       return;
     }
-
     try {
       const response = await fetch(
         "https://food-proj-nine.vercel.app/api/create-payment-intent",
@@ -124,7 +116,7 @@ const CheckoutPage = ({ products }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount: calculateTotalPrice() * 100, // Convert to cents
+            amount: calculateTotalPrice() * 100,
             currency: "usd",
           }),
         }
@@ -153,11 +145,7 @@ const CheckoutPage = ({ products }) => {
         console.error("Payment failed:", error);
       } else {
         console.log("Payment successful");
-
-        // Send email with order details
-        handleEmailSend(products);
-
-        // Show alert for successful order
+        handleEmailSend(cartItems);
         alert("Your order has been successfully placed!");
       }
     } catch (error) {
@@ -215,7 +203,7 @@ const CheckoutPage = ({ products }) => {
               Order Summary
             </h2>
             <div className="space-y-2">
-              {products.map((item, index) => (
+              {cartItems.map((item, index) => (
                 <div key={index} className="flex justify-between">
                   <p>{item.title}</p>
                   <p>
@@ -230,13 +218,12 @@ const CheckoutPage = ({ products }) => {
                 Total: ${calculateTotalPrice().toFixed(2)}
               </p>
             </div>
-          </div>
-          <div>
             <button
               type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mt-4"
+              className="w-full mt-6 py-2 px-4 bg-orange-500 text-white font-semibold rounded"
+              disabled={!stripe}
             >
-              Place Order
+              Pay
             </button>
           </div>
         </form>

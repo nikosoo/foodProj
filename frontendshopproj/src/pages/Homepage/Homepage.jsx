@@ -4,12 +4,17 @@ import fastFoodImage from "../../assets/images/fast-food.jpg";
 import deliveryImage from "../../assets/images/delivery.webp";
 import aboutus from "../../assets/images/aboutus.jpg";
 import bgImage from "../../assets/images/fastfood.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "../../slices/cartSlice";
 import "./Homepage.css";
 
-const HomePage = ({ products, addToCart, removeFromCart }) => {
+const HomePage = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
+
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.cart);
 
   const fetchDataFromDatabase = async () => {
     try {
@@ -38,6 +43,14 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
       setSelectedCategory(category);
       setActiveCategory(category);
     }
+  };
+
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
+
+  const handleRemoveFromCart = (item) => {
+    dispatch(removeFromCart(item));
   };
 
   return (
@@ -133,7 +146,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
                 <p className="mt-2 text-orange-900 font-bold">${item.price}</p>
                 <div className="flex justify-center mt-4">
                   <button
-                    onClick={() => removeFromCart(item)}
+                    onClick={() => handleRemoveFromCart(item)}
                     className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded"
                   >
                     -
@@ -143,7 +156,7 @@ const HomePage = ({ products, addToCart, removeFromCart }) => {
                       0}
                   </span>
                   <button
-                    onClick={() => addToCart(item)}
+                    onClick={() => handleAddToCart(item)}
                     className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded"
                   >
                     +
