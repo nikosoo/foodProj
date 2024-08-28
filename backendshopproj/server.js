@@ -32,7 +32,7 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
-app.use("/api/auth", authRoutes);
+app.use("/api", authRoutes);
 app.use("/api/collections", collectionRoutes);
 
 app.use(errorHandler);
