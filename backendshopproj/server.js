@@ -10,7 +10,15 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+// Configure CORS to allow requests from specific origin(s)
+const corsOptions = {
+  origin: "https://food-proj-hwg6.vercel.app", // Replace with your frontend URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Connect to MongoDB using environment variable
 mongoose
@@ -24,8 +32,8 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
-app.use("/api", authRoutes);
-app.use("/api", collectionRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/collections", collectionRoutes);
 
 app.use(errorHandler);
 
