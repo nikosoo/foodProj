@@ -17,12 +17,7 @@ function ItemList() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://food-proj-nine.vercel.app/api/collections",
-          {
-            headers: {
-              "auth-token": token, // Include the token here
-            },
-          }
+          "https://food-proj-nine.vercel.app/api/collections"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
