@@ -11,9 +11,8 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Configure CORS to allow requests from specific origin(s)
 const corsOptions = {
-  origin: "https://food-proj-hwg6.vercel.app", // Replace with your frontend URL
+  origin: "https://food-proj-hwg6.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
