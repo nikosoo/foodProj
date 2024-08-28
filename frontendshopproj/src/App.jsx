@@ -1,5 +1,10 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +19,9 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import CheckoutPage from "./pages/Checkout/Checkout";
 import AdminPage from "./pages/Admin/AdminPage";
-import { addToCart, removeFromCart, setCart } from "./slices/cartSlice";
+import { addToCart, removeFromCart } from "./slices/cartSlice";
 import { setProducts } from "./slices/productsSlice";
+import { logout } from "./slices/authSlice";
 import "./App.css";
 
 const stripePromise = loadStripe(
@@ -27,6 +33,7 @@ function App() {
   const products = useSelector((state) => state.products);
   const cartItems = useSelector((state) => state.cart);
   const userEmail = useSelector((state) => state.userEmail);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const cartItemsCount = cartItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -57,7 +64,11 @@ function App() {
   };
 
   const handleLogout = () => {
-    dispatch({ type: "user/removeEmail" });
+    dispatch(logout());
+  };
+
+  const PrivateRoute = ({ element }) => {
+    return isAuthenticated ? element : <Navigate to="/login" />;
   };
 
   return (
@@ -91,7 +102,10 @@ function App() {
             <Route path="/products" element={<ItemList />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/item/:productName" element={<Product />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route
+              path="/admin"
+              element={<PrivateRoute element={<AdminPage />} />}
+            />
             <Route
               path="/register"
               element={<Register handleLoginSuccess={handleLoginSuccess} />}
@@ -103,9 +117,13 @@ function App() {
             <Route
               path="/checkout"
               element={
-                <Elements stripe={stripePromise}>
-                  <CheckoutPage products={cartItems} />
-                </Elements>
+                <PrivateRoute
+                  element={
+                    <Elements stripe={stripePromise}>
+                      <CheckoutPage products={cartItems} />
+                    </Elements>
+                  }
+                />
               }
             />
           </Routes>
