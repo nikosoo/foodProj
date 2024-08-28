@@ -16,10 +16,18 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart);
 
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("token");
+
   const fetchDataFromDatabase = async () => {
     try {
       const response = await fetch(
-        "https://food-proj-nine.vercel.app/api/collections"
+        "https://food-proj-nine.vercel.app/api/collections",
+        {
+          headers: {
+            "auth-token": token, // Include the token here
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");

@@ -10,11 +10,19 @@ function ItemList() {
   const items = useSelector((state) => state.products);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://food-proj-nine.vercel.app/api/collections"
+          "https://food-proj-nine.vercel.app/api/collections",
+          {
+            headers: {
+              "auth-token": token, // Include the token here
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -27,7 +35,7 @@ function ItemList() {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleBadgeClick = (category) => {
     setSelectedCategory(category);

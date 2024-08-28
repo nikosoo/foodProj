@@ -8,11 +8,19 @@ function Product({ showTheItems }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
 
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const response = await fetch(
-          "https://food-proj-nine.vercel.app/api/collections"
+          "https://food-proj-nine.vercel.app/api/collections",
+          {
+            headers: {
+              "auth-token": token, // Include the token here
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -38,7 +46,7 @@ function Product({ showTheItems }) {
     }
 
     window.scrollTo(0, 0);
-  }, [productName, showTheItems]);
+  }, [productName, showTheItems, token]);
 
   if (!selectedItem) {
     return <div>Loading...</div>;
@@ -55,7 +63,7 @@ function Product({ showTheItems }) {
           <img
             className="w-full h-auto object-cover object-center rounded-lg"
             src={selectedItem.img}
-            alt="food"
+            alt={selectedItem.title}
           />
         </div>
         <div className="flex flex-col justify-center w-full mt-4 md:mt-0 md:w-1/2 lg:w-2/3">

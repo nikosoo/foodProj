@@ -14,6 +14,9 @@ const CheckoutPage = () => {
   const elements = useElements();
   const cartItems = useSelector((state) => state.cart);
 
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("token");
+
   const calculateTotalPrice = () => {
     let subtotal = 0;
     if (!Array.isArray(cartItems)) {
@@ -114,6 +117,7 @@ const CheckoutPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "auth-token": token, // Include the token here
           },
           body: JSON.stringify({
             amount: calculateTotalPrice() * 100,
