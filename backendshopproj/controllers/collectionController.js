@@ -42,18 +42,22 @@ export const updateCollection = async (req, res) => {
   const { title, description, price, category, img } = req.body;
 
   try {
+    // Attempt to update the collection by ID
     const updatedCollection = await Collection.findByIdAndUpdate(
       collectionId,
       { title, description, price, category, img },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
+    // If no document is found with the given ID
     if (!updatedCollection) {
       return res.status(404).json({ error: "Collection not found" });
     }
 
+    // Respond with the updated collection
     res.json(updatedCollection);
   } catch (error) {
+    // Log and respond with error status
     console.error("Error updating collection:", error);
     res.status(500).json({ error: "Failed to update collection" });
   }
