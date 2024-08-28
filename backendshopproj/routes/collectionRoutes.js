@@ -6,19 +6,17 @@ import {
   getAllCollections,
   createPaymentIntent,
 } from "../controllers/collectionController.js";
-import { authMiddleware } from "../middleware/authMiddleware.js";
+import { authMiddleware } from "../middleware/authMiddleware.js"; // Import the middleware
 
 const router = express.Router();
 
-// Route without middleware
-router.get("/collections", getAllCollections);
-
-// Apply middleware to specific routes
+// Apply middleware to all routes in this router
 router.use(authMiddleware);
 
 router.post("/collections", createCollection);
 router.put("/collections/:id", updateCollection);
 router.delete("/collections/:id", deleteCollection);
+router.get("/collections", getAllCollections);
 router.post("/create-payment-intent", createPaymentIntent);
 
 export default router;
