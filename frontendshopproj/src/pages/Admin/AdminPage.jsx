@@ -9,6 +9,9 @@ const AdminPage = () => {
   const [itemImg, setItemImg] = useState("");
   const [updateItemId, setUpdateItemId] = useState(null); // Track item ID being updated
 
+  // Retrieve the token from localStorage (or wherever you store it)
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -16,7 +19,12 @@ const AdminPage = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://food-proj-nine.vercel.app/api/collections"
+        "https://food-proj-nine.vercel.app/api/collections",
+        {
+          headers: {
+            "auth-token": token, // Include the token here
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -38,6 +46,7 @@ const AdminPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "auth-token": token, // Include the token here
           },
           body: JSON.stringify({
             title: itemTitle,
@@ -68,6 +77,9 @@ const AdminPage = () => {
         `https://food-proj-nine.vercel.app/api/collections/${itemId}`,
         {
           method: "DELETE",
+          headers: {
+            "auth-token": token, // Include the token here
+          },
         }
       );
       if (!response.ok) {
@@ -89,6 +101,7 @@ const AdminPage = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "auth-token": token, // Include the token here
           },
           body: JSON.stringify({
             title: itemTitle,
