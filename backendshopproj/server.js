@@ -33,7 +33,7 @@ mongoose
   });
 
 app.use("/api", authRoutes);
-app.use("/api/collections", collectionRoutes);
+app.use("/api", collectionRoutes);
 
 app.use(errorHandler);
 
