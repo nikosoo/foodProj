@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.post("/collections", createCollection);
-router.put("/collections/:id", updateCollection);
-router.delete("/collections/:id", deleteCollection);
-router.get("/collections", fetchCollections);
-router.post("/create-payment-intent", createPaymentIntent);
+router.post("/collections", authMiddleware, createCollection);
+router.put("/collections/:id", authMiddleware, updateCollection);
+router.delete("/collections/:id", authMiddleware, deleteCollection);
+router.get("/collections", authMiddleware, fetchCollections);
+router.post("/create-payment-intent", authMiddleware, createPaymentIntent);
 
 export default router;
