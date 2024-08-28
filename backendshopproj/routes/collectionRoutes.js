@@ -3,16 +3,16 @@ import {
   createCollection,
   updateCollection,
   deleteCollection,
-  fetchCollections,
+  getAllCollections,
   createPaymentIntent,
 } from "../controllers/collectionController.js";
 
 const router = express.Router();
 
-router.post("/collections", authMiddleware, createCollection);
-router.put("/collections/:id", authMiddleware, updateCollection);
-router.delete("/collections/:id", authMiddleware, deleteCollection);
-router.get("/collections", authMiddleware, fetchCollections);
-router.post("/create-payment-intent", authMiddleware, createPaymentIntent);
+router.post("/collections", createCollection);
+router.put("/collections/:id", updateCollection);
+router.delete("/collections/:id", deleteCollection);
+router.get("/collections", getAllCollections);
+router.post("/create-payment-intent", createPaymentIntent);
 
 export default router;
