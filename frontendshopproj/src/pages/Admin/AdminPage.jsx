@@ -36,7 +36,7 @@ const AdminPage = () => {
 
     try {
       const response = await fetch(
-        "https://food-proj-nine.vercel.app/api/collections",
+        "https://food-proj-nine.vercel.app/api/collections/update",
         {
           method: "POST",
           headers: {

@@ -16,7 +16,7 @@ router.get("/collections", getAllCollections);
 // Apply middleware to specific routes
 router.use(authMiddleware);
 
-router.post("/collections", createCollection);
+router.post("/collections/update", createCollection);
 router.put("/collections/:id", updateCollection);
 router.delete("/collections/:id", deleteCollection);
 router.post("/create-payment-intent", createPaymentIntent);
