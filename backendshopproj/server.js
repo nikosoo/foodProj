@@ -1,29 +1,34 @@
 import express from "express";
+import mongoose from "mongoose";
 import cors from "cors";
-import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import collectionRoutes from "./routes/collectionRoutes.js";
+import { errorHandler } from "./utils/errorHandler.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-
-// Middleware
-app.use(
-  cors({
-    origin: "https://food-proj-hwg6.vercel.app",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-  })
-);
 app.use(express.json());
+app.use(cors());
 
-// Connect to the database
-connectDB();
+// Connect to MongoDB using environment variable
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    dbName: "test",
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
 
-// Routes
 app.use("/api", authRoutes);
 app.use("/api", collectionRoutes);
 
-// Server
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

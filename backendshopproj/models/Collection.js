@@ -9,4 +9,6 @@ const CollectionSchema = new mongoose.Schema({
   img: String,
 });
 
-export default mongoose.model("Collection", CollectionSchema);
+const Collection = mongoose.model("Collection", CollectionSchema);
+
+export default Collection;
