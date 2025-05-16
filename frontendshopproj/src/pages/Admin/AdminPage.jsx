@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [items, setItems] = useState([]);
   const [itemTitle, setItemTitle] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemPrice, setItemPrice] = useState("");
-  const [itemCategory, setItemCategory] = useState("burgers"); // Default to "burgers"
+  const [itemCategory, setItemCategory] = useState("burgers");
   const [itemImg, setItemImg] = useState("");
-  const [updateItemId, setUpdateItemId] = useState(null); // Track item ID being updated
+  const [updateItemId, setUpdateItemId] = useState(null);
 
-  // Retrieve the token from localStorage (or wherever you store it)
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const fetchData = async () => {
     try {
@@ -41,7 +47,7 @@ const AdminPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": token, // Include the token here
+            "auth-token": token,
           },
           body: JSON.stringify({
             title: itemTitle,
@@ -58,7 +64,7 @@ const AdminPage = () => {
       setItemTitle("");
       setItemDescription("");
       setItemPrice("");
-      setItemCategory("burgers"); // Reset to default "burgers"
+      setItemCategory("burgers");
       setItemImg("");
       fetchData();
     } catch (error) {
@@ -73,7 +79,7 @@ const AdminPage = () => {
         {
           method: "DELETE",
           headers: {
-            "auth-token": token, // Include the token here
+            "auth-token": token,
           },
         }
       );
@@ -87,7 +93,7 @@ const AdminPage = () => {
   };
 
   const handleUpdateItem = async () => {
-    if (!updateItemId) return; // Ensure updateItemId is set
+    if (!updateItemId) return;
 
     try {
       const response = await fetch(
@@ -96,7 +102,7 @@ const AdminPage = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": token, // Include the token here
+            "auth-token": token,
           },
           body: JSON.stringify({
             title: itemTitle,
@@ -113,9 +119,9 @@ const AdminPage = () => {
       setItemTitle("");
       setItemDescription("");
       setItemPrice("");
-      setItemCategory("burgers"); // Reset to default "burgers"
+      setItemCategory("burgers");
       setItemImg("");
-      setUpdateItemId(null); // Reset updateItemId after update
+      setUpdateItemId(null);
       fetchData();
     } catch (error) {
       console.error("Error updating item:", error);
@@ -133,9 +139,15 @@ const AdminPage = () => {
 
   return (
     <div className="container mt-40 mx-auto p-4 font-poppins">
-      <h2 className="text-3xl font-semibold mb-4 text-orange-500">
-        Admin Page
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-semibold text-orange-500">Admin Page</h2>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
+        >
+          Logout
+        </button>
+      </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2 text-orange-500">
@@ -143,15 +155,11 @@ const AdminPage = () => {
         </h3>
         <form onSubmit={handleAddItem} className="max-w-md">
           <div className="mb-4">
-            <label
-              htmlFor="itemTitle"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Title
             </label>
             <input
               type="text"
-              id="itemTitle"
               value={itemTitle}
               onChange={(e) => setItemTitle(e.target.value)}
               required
@@ -159,14 +167,10 @@ const AdminPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="itemDescription"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
             </label>
             <textarea
-              id="itemDescription"
               rows={3}
               value={itemDescription}
               onChange={(e) => setItemDescription(e.target.value)}
@@ -175,15 +179,11 @@ const AdminPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="itemPrice"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Price
             </label>
             <input
               type="number"
-              id="itemPrice"
               value={itemPrice}
               onChange={(e) => setItemPrice(e.target.value)}
               required
@@ -191,14 +191,10 @@ const AdminPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="itemCategory"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
             </label>
             <select
-              id="itemCategory"
               value={itemCategory}
               onChange={(e) => setItemCategory(e.target.value)}
               required
@@ -210,15 +206,11 @@ const AdminPage = () => {
             </select>
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="itemImg"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Image URL
             </label>
             <input
               type="text"
-              id="itemImg"
               value={itemImg}
               onChange={(e) => setItemImg(e.target.value)}
               required
@@ -271,7 +263,6 @@ const AdminPage = () => {
         </div>
       </div>
 
-      {/* Larger modal for editing item */}
       {updateItemId && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg max-w-lg w-full">
@@ -280,15 +271,11 @@ const AdminPage = () => {
             </h3>
             <form onSubmit={handleUpdateItem}>
               <div className="mb-4">
-                <label
-                  htmlFor="editItemTitle"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Title
                 </label>
                 <input
                   type="text"
-                  id="editItemTitle"
                   value={itemTitle}
                   onChange={(e) => setItemTitle(e.target.value)}
                   required
@@ -296,14 +283,10 @@ const AdminPage = () => {
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="editItemDescription"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
                 <textarea
-                  id="editItemDescription"
                   rows={3}
                   value={itemDescription}
                   onChange={(e) => setItemDescription(e.target.value)}
@@ -312,15 +295,11 @@ const AdminPage = () => {
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="editItemPrice"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Price
                 </label>
                 <input
                   type="number"
-                  id="editItemPrice"
                   value={itemPrice}
                   onChange={(e) => setItemPrice(e.target.value)}
                   required
@@ -328,14 +307,10 @@ const AdminPage = () => {
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="editItemCategory"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Category
                 </label>
                 <select
-                  id="editItemCategory"
                   value={itemCategory}
                   onChange={(e) => setItemCategory(e.target.value)}
                   required
@@ -347,15 +322,11 @@ const AdminPage = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="editItemImg"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Image URL
                 </label>
                 <input
                   type="text"
-                  id="editItemImg"
                   value={itemImg}
                   onChange={(e) => setItemImg(e.target.value)}
                   required

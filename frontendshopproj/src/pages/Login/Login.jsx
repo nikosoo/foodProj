@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginSuccess, loginFailure } from "../../slices/authSlice";
 import bowlImage from "../../assets/images/large-bowl.avif";
 import { Link } from "react-router-dom";
@@ -15,17 +15,30 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // ✅ Hardcoded admin check
+    if (email === "admin@email.com" && password === "123") {
+      localStorage.setItem("token", "admin-token");
+      localStorage.setItem("isAdmin", "true");
+      dispatch(loginSuccess(email));
+      navigate("/admin");
+      return;
+    } else {
+      localStorage.setItem("isAdmin", "false");
+    }
+
     try {
       const response = await axios.post(
         "https://food-proj-nine.vercel.app/api/login",
         { email, password }
       );
+
       const token = response.data;
       localStorage.setItem("token", token);
-      dispatch(loginSuccess(email)); // Update state on successful login
-      navigate("/");
+      dispatch(loginSuccess(email));
+      navigate("/"); // Redirect regular user to homepage
     } catch (error) {
-      dispatch(loginFailure("Invalid email or password")); // Update state on failure
+      dispatch(loginFailure("Invalid email or password"));
       setError("Invalid email or password");
     }
   };

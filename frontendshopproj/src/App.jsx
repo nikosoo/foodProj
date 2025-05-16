@@ -104,9 +104,16 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/item/:productName" element={<Product />} />
             <Route
-              path="/admin"
-              element={<PrivateRoute element={<AdminPage />} />}
-            />
+  path="/admin"
+  element={
+    localStorage.getItem("isAdmin") === "true" ? (
+      <AdminPage />
+    ) : (
+      <Navigate to="/" replace />
+    )
+  }
+/>
+
             <Route
               path="/register"
               element={<Register handleLoginSuccess={handleLoginSuccess} />}
