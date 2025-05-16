@@ -14,8 +14,14 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  fetchData();
+}, [token, navigate]);
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
