@@ -19,9 +19,10 @@ function Header() {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
-  const handleLogout = () => {
-    dispatch(logout()); // Dispatch the logout action
-  };
+ const handleLogout = () => {
+  localStorage.removeItem("token"); // clear token from localStorage
+  dispatch(logout()); // update redux state
+};
 
   console.log("User:", user);
 
