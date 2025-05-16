@@ -96,6 +96,8 @@ const AdminPage = () => {
   };
 
   const handleUpdateItem = async () => {
+      e.preventDefault();              // ◀︎ stop the form from auto-submitting
+
     if (!updateItemId) return;
 
     try {
