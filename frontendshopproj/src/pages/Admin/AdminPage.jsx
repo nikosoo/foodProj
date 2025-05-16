@@ -14,16 +14,13 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
-  fetchData();
-}, [token, navigate]);
-
-
- 
+    fetchData();
+  }, [token, navigate]);
 
   const fetchData = async () => {
     try {
@@ -95,8 +92,8 @@ const AdminPage = () => {
     }
   };
 
-  const handleUpdateItem = async () => {
-      e.preventDefault();              // ◀︎ stop the form from auto-submitting
+  const handleUpdateItem = async (event) => {
+    event.preventDefault();  // Fixed: Corrected parameter name from 'e' to 'event'
 
     if (!updateItemId) return;
 
