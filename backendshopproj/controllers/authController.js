@@ -25,11 +25,16 @@ export const login = async (req, res) => {
   }
 
   const validPassword = await bcrypt.compare(password, user.password);
-
   if (!validPassword) {
     return res.status(400).send("Invalid email or password");
   }
 
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+  // ← embed isAdmin into the token payload
+  const token = jwt.sign(
+    { _id: user._id, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET,
+    { expiresIn: "2h" }
+  );
+
   res.header("auth-token", token).send(token);
 };

@@ -12,3 +12,10 @@ export const authMiddleware = (req, res, next) => {
     res.status(400).send("Invalid token");
   }
 };
+
+export const requireAdmin = (req, res, next) => {
+  if (!req.user?.isAdmin) {
+    return res.status(403).send("Not authorized: admin only");
+  }
+  next();
+};

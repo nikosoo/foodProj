@@ -13,35 +13,38 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
 
-    // ✅ Hardcoded admin check
-    if (email === "admin@email.com" && password === "123") {
-      localStorage.setItem("token", "admin-token");
+  try {
+    // 1️⃣ Always hit your real login endpoint
+    const response = await axios.post(
+      "https://food-proj-nine.vercel.app/api/login",
+      { email, password }
+    );
+    const token = response.data;
+    localStorage.setItem("token", token);
+    
+    // 2️⃣ Mark admin only if creds match
+    if (
+      email === "admin@email.com" &&
+      password === "123"
+    ) {
       localStorage.setItem("isAdmin", "true");
       dispatch(loginSuccess(email));
-      navigate("/admin");
-      return;
-    } else {
-      localStorage.setItem("isAdmin", "false");
+      return navigate("/admin");
     }
+    
+    // 3️⃣ Otherwise regular user
+    localStorage.setItem("isAdmin", "false");
+    dispatch(loginSuccess(email));
+    navigate("/");
+  } catch (error) {
+    dispatch(loginFailure("Invalid email or password"));
+    setError("Invalid email or password");
+  }
+};
 
-    try {
-      const response = await axios.post(
-        "https://food-proj-nine.vercel.app/api/login",
-        { email, password }
-      );
-
-      const token = response.data;
-      localStorage.setItem("token", token);
-      dispatch(loginSuccess(email));
-      navigate("/"); // Redirect regular user to homepage
-    } catch (error) {
-      dispatch(loginFailure("Invalid email or password"));
-      setError("Invalid email or password");
-    }
-  };
 
   return (
     <div className="flex justify-center items-center h-screen font-poppins">
