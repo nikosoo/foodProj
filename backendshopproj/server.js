@@ -9,34 +9,31 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-
-// 1) Enable CORS for *all* origins, allow your auth header, and handle credentials if needed
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
-    credentials: true,  // omit or set false if you’re not using cookies
-  })
-);
-
-// 2) Respond to preflight (OPTIONS) requests
-app.options("*", cors());
-
-// 3) JSON body parser
 app.use(express.json());
 
-// 4) Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI, { dbName: "test" })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+const corsOptions = {
+  origin: "https://food-proj-hwg6.vercel.app",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
 
-// 5) Mount routes
+app.use(cors(corsOptions));
+
+// Connect to MongoDB using environment variable
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    dbName: "test",
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
+
 app.use("/api", authRoutes);
 app.use("/api", collectionRoutes);
 
-// 6) Error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
