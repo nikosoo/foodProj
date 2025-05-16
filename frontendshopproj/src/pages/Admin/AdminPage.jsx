@@ -23,10 +23,7 @@ const AdminPage = () => {
 }, [token, navigate]);
 
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+ 
 
   const fetchData = async () => {
     try {
@@ -147,12 +144,7 @@ const AdminPage = () => {
     <div className="container mt-40 mx-auto p-4 font-poppins">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-semibold text-orange-500">Admin Page</h2>
-        <button
-          onClick={handleLogout}
-          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
-        >
-          Logout
-        </button>
+       
       </div>
 
       <div className="mb-8">
