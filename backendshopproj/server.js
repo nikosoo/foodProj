@@ -10,17 +10,17 @@ dotenv.config();
 
 const app = express();
 
-// 1) Enable CORS globally, exposing your custom auth header
+// 1) Enable CORS for *all* origins, allow your auth header, and handle credentials if needed
 app.use(
   cors({
-    origin: "https://food-proj-hwg6.vercel.app",   // your front-end origin
+    origin: "*",
     methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
-    credentials: true,                              // if you ever send cookies
+    credentials: true,  // omit or set false if you’re not using cookies
   })
 );
 
-// 2) ALSO explicitly handle preflight OPTIONS requests
+// 2) Respond to preflight (OPTIONS) requests
 app.options("*", cors());
 
 // 3) JSON body parser
@@ -32,11 +32,11 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// 5) Mount your routes
+// 5) Mount routes
 app.use("/api", authRoutes);
 app.use("/api", collectionRoutes);
 
-// 6) Your error handler
+// 6) Error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
